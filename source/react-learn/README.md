@@ -1,7 +1,7 @@
 
 # react-learn
 
-## react学习环境搭建源码
+搭建react学习环境源码
 
 ### 安装
 
