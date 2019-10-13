@@ -7,6 +7,7 @@
 4. 在react-learn下新建webpack.config.js,用于webpack配置
 5. 在react-learn下新建.babelrc,用于babel配置
 6. 得到最终目录结构如下：
+
 ![](https://i.imgur.com/AE4GhF3.png)
 
 ## 搭建webpack打包环境
