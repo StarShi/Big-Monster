@@ -16,7 +16,7 @@ const config = {
         rules: [
             {
                 test: /\.js$/,//配置babel-loader 解析es6和jsx语法
-                use: 'babel-loader',
+                use: ['babel-loader'],
                 exclude: resolve('node_modules')
             }
         ]
@@ -37,6 +37,9 @@ const config = {
                 },
             }
         },
+        // splitChunks: {
+        //     chunks: 'all',
+        // },
         minimizer: [
             new UglifyJsWebpackPlugin({//压缩js
                 cache: true,
@@ -45,7 +48,8 @@ const config = {
             }),
         ]
     },
-    devtool: 'cheap-module-eval-source-map'
+    // devtool: 'cheap-module-eval-source-map'
+    devtool: 'inline-source-map'
 };
 
 module.exports = config;

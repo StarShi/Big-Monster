@@ -1,11 +1,15 @@
-// const puppeteer = require('puppeteer');
-import puppeteer from 'puppeteer'
+var chai = require('chai')
+    , expect = chai.expect
+    , should = chai.should();
 
-const test =async ()=>{
-  const browser = await puppeteer.launch();
-  console.log(await browser.version());
-  await browser.close();
-  console.log('测试');
-};
+const  text = () => {
+  describe('Object', function() {
+    describe('#have.property', function() {
+      it('should return property b', function() {
+        expect({a: 1}).to.not.have.property('b');
+      });
+    });
+  });
+}
 
-export default test;
+export default text
