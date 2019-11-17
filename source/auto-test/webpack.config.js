@@ -49,7 +49,14 @@ const config = {
         ]
     },
     // devtool: 'cheap-module-eval-source-map'
-    devtool: 'inline-source-map'
+    devtool: 'inline-source-map',
+    node: {
+        console: false,
+        global: true,
+        domain:true,
+        module:true,
+        // 更多选项，请查看“其他 Node.js 核心库”
+    }
 };
 
 module.exports = config;

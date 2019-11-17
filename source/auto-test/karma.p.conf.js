@@ -18,9 +18,9 @@ module.exports = function (config)  {
         // 排除的文件列表
         exclude: [],
         // 在浏览器使用之前处理匹配的文件
-        // preprocessors: {
-        //     "/dist/*.js": ['sourcemap']
-        // },
+        preprocessors: {
+            "/dist/*.js": ['sourcemap']
+        },
         reporters: ["progress", "coverage-istanbul"],
         coverageIstanbulReporter: {
             reports: ['html', 'text-summary'],
@@ -47,12 +47,12 @@ module.exports = function (config)  {
         // 启用或禁用自动检测文件变化进行测试
         autoWatch: true,
         //测试启动的浏览器
-        browsers: ["Nightmare"],//Nightmare
+        browsers: ["ChromeHeadless"],//Nightmare
         //开启或禁用持续集成模式
         singleRun: true,
         //并发级别（启动的浏览器数）
         concurrency: Infinity,
-        webpack: webpackConfig,
+        // webpack: webpackConfig,
         nightmareOptions: {
             width: 800,
             height: 600,
