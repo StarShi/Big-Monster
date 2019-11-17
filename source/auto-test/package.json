@@ -7,7 +7,7 @@
     "dev": "webpack --config ./webpack.config.js --color",
     "unit": "npm run dev && karma start ./karma.conf.js",
     "e2e": " npm run dev && karma start ./karma.e2e.conf.js",
-    "p2p": " karma start ./karma.p.conf.js"
+    "p2p": " mocha ./src/application/app_3/index.js"
   },
   "author": "",
   "license": "ISC",
