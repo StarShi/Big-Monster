@@ -5,7 +5,7 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import config from './test.config.js';
 
-const DIR = path.join(os.tmpdir(), config.temp_dir);
+const DIR = path.join(os.tmpdir(), config.temp_dir);//创建缓存路径
 
 //打开浏览器
 const openBrowser = async () => {
@@ -32,12 +32,12 @@ const openBrowser = async () => {
   const token = 'token';//设置token
   if (token) {
     await page.evaluate((token) => {
-      window.localStorage.setItem('token', token)
+      window.localStorage.setItem('token', token);
     }, token);
   }
 
-  mkdirp.sync(DIR);
-  fs.writeFileSync(path.join(DIR, 'wsEndpoint'), browser.wsEndpoint());
+  mkdirp.sync(DIR);//根据缓存路径创建换成空间
+  fs.writeFileSync(path.join(DIR, 'wsEndpoint'), browser.wsEndpoint());//保存wsEndpoint
 };
 
 //获取浏览器

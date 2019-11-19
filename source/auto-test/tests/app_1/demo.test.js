@@ -1,6 +1,5 @@
 import {getBrowser,openNewPage} from "../../utils/puppeteerApi";
 
-
 describe('ly.com demo cases', () => {
   let page = null;
   beforeEach(async () => {

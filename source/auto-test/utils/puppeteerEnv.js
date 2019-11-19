@@ -3,9 +3,9 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const config = require('./test.config.js');
+const globalConfig = require('./test.config.js');
 
-const DIR = path.join(os.tmpdir(), config.temp_dir);
+const DIR = path.join(os.tmpdir(), globalConfig.temp_dir);
 
 class PuppeteerEnvironment extends NodeEnvironment {
 
@@ -27,7 +27,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
     for (let i = 0, size = page_list.length; i < size; i++) {
       const page = page_list[i];
       //判断域名，如果不判断页面域名直接调用window.localStorage，会报错的
-      if (page.url().indexOf(config.domain_name) >= 0) {
+      if (page.url().indexOf(globalConfig.domain_name) >= 0) {
         this.global.__TOKEN__ = await page.evaluate(() => {
           return window.localStorage.getItem('token')
         });
