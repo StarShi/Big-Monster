@@ -4,5 +4,7 @@ module.exports = {
   globalTeardown: './utils/teardown.js',//全部用例执行结束后,会执行这个文件代码
   testEnvironment: './utils/puppeteerEnv.js',//测试环境
   moduleFileExtensions:['js'],//模块文件后缀
-  roots: ["tests"],//测试根目录
+  roots: ['tests'],//测试根目录
+  coverageDirectory:'coverage',//覆盖率报告目录
+  collectCoverage:true,//是否收集测试覆盖率
 };
