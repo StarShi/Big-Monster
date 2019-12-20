@@ -39,7 +39,7 @@
         "exit": "",
         "restart": ""
         },
-        "ext": "js json ts tsx",/* 配置ts tsx */
+        "ext": "js json ts tsx",
         "watch": ["./**"],
         "env": {
         "NODE_ENV": "development",
