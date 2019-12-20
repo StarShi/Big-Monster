@@ -1,4 +1,4 @@
-#搭建node + ts + koa环境
+#搭建node + typescript + koa环境
 
 1. 新建项目文件
         
