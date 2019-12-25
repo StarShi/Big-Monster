@@ -1,4 +1,4 @@
-class SparseArr {
+export default class SparseArr {
     public arr: any[];
     public constructor() {
         this.arr = [[1, 2], [2, 3]];
@@ -12,4 +12,7 @@ class SparseArr {
         }
     }
 }
-export default SparseArr
+
+// export default function add(a:number,b:number) {
+//     return a + b;
+// }

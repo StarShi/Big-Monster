@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var SparseArr = /** @class */ (function () {
     function SparseArr() {
         this.arr = [[1, 2], [2, 3]];
@@ -14,7 +12,8 @@ var SparseArr = /** @class */ (function () {
     };
     return SparseArr;
 }());
-exports.default = SparseArr;
+var a = new SparseArr();
+a.parseNomal();
 // export default function add(a:number,b:number) {
 //     return a + b;
 // }
