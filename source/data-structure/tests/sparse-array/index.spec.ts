@@ -1,11 +1,11 @@
-import SparseArr from '../../src/sparse-array/index'
-// let a = new SparseArr()
+import SparseArray from '../../src/sparse-array'
+import TwoDimensionArray from "../../src/two-array"
 
-test('SparseArr', () => {
-    let a = new SparseArr();
-    a.parseNomal();
+// let a = new SparseArray()
+
+describe('test sparse array', () => {
+    let twoArr:TwoDimensionArray = new TwoDimensionArray(10,10);
+    let sparseArr = new SparseArray(twoArr);
+    sparseArr.parseNomal();
 });
 
-// test('SparseArr: 1 + 1 = 2',()=>{
-//     expect(SparseArr(1,1)).toBe(2);
-//  });

@@ -4,19 +4,19 @@
  * @author Star Shi
  * @date 2019-12-25
  * @param {*} origin  被克隆的值
- * @param {*} copyArr 克隆后的值
+ * @param {*} [copyObj=null] 克隆后的值
  * @returns  克隆后的值
  */
-
-export function arrayDeepClone(origin: any, copyArr?: any) {
+export function deepClone(origin: any, copyObj: any = null) {
+    let copy = null;
     let toStr = Object.prototype.toString;
     let originType = toStr.call(origin);
     // 判断被克隆值是否为对象或数组，如果是则进入遍历克隆 否则就直接复制
-    if (typeof (originType) === 'object' && originType !== null) {
+    if (typeof (origin) === 'object' && origin !== null) {
         if (originType == '[object Array]') {
-            copyArr = []
+            copy = copyObj || [];
         } else if (originType == '[object Object]') {
-            copyArr = {}
+            copy = copyObj || {};
         }
         for (let key in origin) {
             if (origin.hasOwnProperty(key)) {
@@ -24,21 +24,21 @@ export function arrayDeepClone(origin: any, copyArr?: any) {
                 if (typeof (val) === 'object' && val !== null) {
                     let type = toStr.call(val);
                     if (type == '[object Array]') {//值为数组时
-                        copyArr[key] = [];
+                        copy[key] = [];
                     } else if (type == '[object Object]') {//值为对象时
-                        copyArr[key] = {};
+                        copy[key] = {};
                     } else { //值为包装类时
-                        copyArr[key] = val;
+                        copy[key] = val;
                         continue;
                     }
-                    arrayDeepClone(val, copyArr[key]);
+                    deepClone(val, copy[key]);
                 } else { //原始值 和function 时
-                    copyArr[key] = val;
+                    copy[key] = val;
                 }
             }
         }
     } else {//原始值 和function 时
-        copyArr = origin;
+        copy = origin;
     }
-    return copyArr;
+    return copy;
 }

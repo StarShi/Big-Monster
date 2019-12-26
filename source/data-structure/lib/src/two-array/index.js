@@ -8,6 +8,13 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var tools_1 = require("../../utils/tools");
+/**
+ * @description 二维数组
+ * @author Star Shi
+ * @date 2019-12-26
+ * @export
+ * @class TwoDimensionArray
+ */
 var TwoDimensionArray = /** @class */ (function () {
     function TwoDimensionArray(oneLen, twoLen, defaultVal) {
         if (oneLen === void 0) { oneLen = 0; }
@@ -28,28 +35,43 @@ var TwoDimensionArray = /** @class */ (function () {
         }
     }
     // 遍历二维数组
-    TwoDimensionArray.prototype.iteration = function (fn) {
-        var _this = this;
-        if (fn === void 0) { fn = function (i, j, arr) {
-            if (arr === void 0) { arr = _this.arr; }
-            return arr[i][j];
-        }; }
+    TwoDimensionArray.prototype.forEach = function (fn) {
+        if (fn === void 0) { fn = function (val, i, j) { }; }
         for (var i = 0; i < this.rowLength; i++) {
             for (var j = 0; j < this.colLength; j++) {
-                this.arr[i][j] = fn && fn(i, j);
+                fn && fn(this.arr[i][j], i, j);
+            }
+        }
+    };
+    // 循环赋值 
+    TwoDimensionArray.prototype.forEachValue = function (fn) {
+        if (fn === void 0) { fn = function (val, i, j) { return val; }; }
+        for (var i = 0; i < this.rowLength; i++) {
+            for (var j = 0; j < this.colLength; j++) {
+                this.arr[i][j] = (fn && fn(this.arr[i][j], i, j)) || this.arr[i][j];
             }
         }
     };
     // 获取二维数组
     TwoDimensionArray.prototype.getArray = function () {
-        return tools_1.arrayDeepClone(this.arr);
+        return tools_1.deepClone(this.arr);
     };
-    // 获取值
+    // 获取二维数组值
     TwoDimensionArray.prototype.getValue = function (rowIndex, colIndex) {
         return this.arr[rowIndex][colIndex];
     };
-    TwoDimensionArray.prototype.setValue = function (rowIndex, colIndex, value) {
-        this.arr[rowIndex][colIndex];
+    // 设置二维数组值
+    TwoDimensionArray.prototype.setValue = function (value, rowIndex, colIndex) {
+        if (rowIndex === undefined || colIndex === undefined) { // 如果只传value，则循环赋值
+            for (var i = 0; i < this.rowLength; i++) {
+                for (var j = 0; j < this.colLength; j++) {
+                    this.arr[i][j] = value;
+                }
+            }
+        }
+        else if (rowIndex < this.rowLength && colIndex < this.colLength) { // 如果rowIndex 和colIndex没越界 则允许重新设置值 
+            this.arr[rowIndex][colIndex] = value;
+        }
     };
     return TwoDimensionArray;
 }());
