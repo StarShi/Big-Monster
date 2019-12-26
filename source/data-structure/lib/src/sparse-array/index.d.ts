@@ -6,9 +6,11 @@ import TwoDimensionArray from "../two-array";
  * @export
  * @class SparseArr
  */
-export default class SparseArr {
-    private maxLength;
+export default class SparseArray {
+    rowLength: number;
+    protected colLength: number;
     private arr;
-    constructor(arr: TwoDimensionArray);
-    parseNomal(): void;
+    constructor(myarr: TwoDimensionArray);
+    restore(): any[];
+    getArray(): any;
 }

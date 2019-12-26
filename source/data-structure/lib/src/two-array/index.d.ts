@@ -13,7 +13,8 @@ export default class TwoDimensionArray {
     constructor(oneLen?: number, twoLen?: number, defaultVal?: number);
     forEach(fn?: Function): void;
     forEachValue(fn?: Function): void;
-    getArray(): any;
+    getArray(): Array<any>;
     getValue(rowIndex: number, colIndex: number): any;
     setValue(value: any, rowIndex?: number, colIndex?: number): void;
+    getEffectiveCount(): number;
 }

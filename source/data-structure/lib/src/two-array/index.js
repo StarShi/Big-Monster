@@ -73,6 +73,16 @@ var TwoDimensionArray = /** @class */ (function () {
             this.arr[rowIndex][colIndex] = value;
         }
     };
+    // 统计二维数组有效值数量
+    TwoDimensionArray.prototype.getEffectiveCount = function () {
+        var count = 0;
+        this.forEach(function (val) {
+            if (val !== 0 && val !== undefined && val !== null) {
+                count++;
+            }
+        });
+        return count;
+    };
     return TwoDimensionArray;
 }());
 exports.default = TwoDimensionArray;
