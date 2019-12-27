@@ -15,10 +15,10 @@ export default class SparseArray {
     public constructor(myarr: TwoDimensionArray) {
         // 获取原始数组有效值，并创建稀疏数组第一行
         let count: number = myarr.getEffectiveCount();
-        this.arr = [myarr.rowLength, myarr.colLength, count];
+        this.arr = [[myarr.rowLength, myarr.colLength, count]];
         // 遍历原始二维数组 ,如果存在有效值，则在稀疏数组中存入行下标、列下标和值
         myarr.forEach((val: any, rowIndex: number, colIndex: number) => {
-            if (val !== 0) {
+            if (val !== 0 && val !== undefined && val !== null) {
                 this.arr.push([rowIndex, colIndex, val]);
             }
         });

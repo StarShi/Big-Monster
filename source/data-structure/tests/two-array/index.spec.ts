@@ -3,7 +3,6 @@ import TwoDimensionArray from '../../src/two-array'
 
 describe('test  TwoDimensionArray', () => {
     let dimensionArr = new TwoDimensionArray(10, 10, 1);
-    console.log(dimensionArr.arr);
     test('test create dimensional array', () => {
         expect(dimensionArr.rowLength).toBe(10);
         expect(dimensionArr.colLength).toBe(10);
