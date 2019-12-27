@@ -1,5 +1,12 @@
 import Node from "../single-linked-list-node"
 
+/**
+ * @description 带头的单链表
+ * @author Star Shi
+ * @date 2019-12-27
+ * @export
+ * @class SingleLinkedList
+ */
 export default class SingleLinkedList {
     private headNode: Node = new Node(null);
 
