@@ -1,13 +1,15 @@
-import SingleLinkedList from "../../src/single-linked-list"
-import Node from "../../src/single-linked-list-node"
+import DoubleLinkedList from "../../src/double-linked-list"
+import Node from "../../src/double-linked-list-node"
 
-describe('test single linked list', () => {
+describe('test double linked list', () => {
     let arr: any[] = ["节点1", "节点2", 3, "插入节点", "修改节点", "移除节点"];
-    let myLinkedList: SingleLinkedList = new SingleLinkedList();
+    let myLinkedList: DoubleLinkedList = new DoubleLinkedList();
     test('test append method', () => {
         myLinkedList.append(arr[0]);
         myLinkedList.append(arr[1]);
         myLinkedList.append(arr[2]);
+        // console.log(myLinkedList.toString());
+
     });
 
     test('test getNode method', () => {
@@ -17,17 +19,6 @@ describe('test single linked list', () => {
         // 测试越界获取
         expect(myLinkedList.getNode(-1)).toBeFalsy();
         expect(myLinkedList.getNode(3)).toBeFalsy();
-    });
-
-    test('test getPreNode method', () => {
-        // 测试获取
-        let node1: any = myLinkedList.getPreNode(0);
-        expect(node1.data).toBe(null);
-        let node2: any = myLinkedList.getPreNode(1);
-        expect(node2.data).toBe(arr[0]);
-        // 测试越界获取
-        expect(myLinkedList.getPreNode(-1)).toBeFalsy();
-        expect(myLinkedList.getPreNode(4)).toBeFalsy();
     });
 
     test('test updata method', () => {
@@ -48,6 +39,8 @@ describe('test single linked list', () => {
         expect(myLinkedList.insert(0, arr[3])).toBeTruthy();
         // 测试中间添加
         expect(myLinkedList.insert(2, arr[3])).toBeTruthy();
+
+
     });
 
     test('test removeAt method', () => {
@@ -59,6 +52,7 @@ describe('test single linked list', () => {
         // 测试越界移除
         expect(myLinkedList.removeAt(myLinkedList.getLength())).toBeFalsy();
         expect(myLinkedList.removeAt(-1)).toBeFalsy();
+
     });
 
     test('test visit method', () => {
@@ -75,7 +69,7 @@ describe('test single linked list', () => {
 
     test('test toString method', () => {
         let str: string = myLinkedList.toString();
-        // console.log(str)
+        console.log(str)
     });
 
     test('test isEmpty method', () => {
