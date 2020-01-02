@@ -8,7 +8,7 @@ describe('test array queue', () => {
     queue.entryQueue('王二');
     
     test('test getQueueLength method of queue', () => {
-        expect(queue.getQueueLength()).toBe(3);
+        expect(queue.getSize()).toBe(3);
     });
 
     test('test isFull method of queue', () => {
