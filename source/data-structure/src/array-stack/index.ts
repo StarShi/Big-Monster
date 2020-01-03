@@ -14,13 +14,13 @@ export default class ArrayStack {
     }
 
     // 入栈
-    public pushStack(value: any):boolean {
+    public pushStack(value: any): boolean {
         let flag = this.isFull();
         !flag && this.item.push(value);//栈空入栈，返回true ,栈满则入栈失败，返回false
-        return !flag
+        return !flag;
     }
     // 出栈
-    public popStack():(any | boolean) {
+    public popStack(): (any | boolean) {
         let flag = this.isEmpty();
         //栈非空出栈，返回出栈的值，栈空则出栈失败，返回false
         return !flag ? this.item.pop() : false;
@@ -35,9 +35,13 @@ export default class ArrayStack {
     public isEmpty(): boolean {
         return this.item.length === 0;
     }
-    
+
     // 获取栈长
-    public getSize(){
+    public getSize() {
         return this.item.length;
+    }
+    // 获取栈顶元素
+    public getTop(): any {
+        return this.item[this.item.length - 1];
     }
 }
