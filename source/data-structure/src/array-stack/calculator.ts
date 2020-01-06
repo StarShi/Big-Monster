@@ -1,4 +1,4 @@
-import ArrayStack from "./index";
+import ArrayStack from "../../src/array-stack/index";
 
 export default class Calculator {
     public expression: string = "";
@@ -42,8 +42,6 @@ export default class Calculator {
                     keepNum = "";//清空缓存
                 }
             }
-            console.log(this.numberStack);
-            console.log(this.operateStack);
         }
         // 当符号栈不为空时，
         while (!this.operateStack.isEmpty()) {
