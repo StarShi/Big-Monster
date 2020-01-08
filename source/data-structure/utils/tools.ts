@@ -7,7 +7,7 @@
  * @param {*} [copyObj=null] 克隆后的值
  * @returns  克隆后的值
  */
-export function deepClone(origin: any, copyObj: any = null) {
+export function deepClone(origin: any, copyObj: any = null): any {
     let copy = null;
     let toStr = Object.prototype.toString;
     let originType = toStr.call(origin);
