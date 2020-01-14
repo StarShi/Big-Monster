@@ -133,10 +133,10 @@ export default class Sort {
      * @author Star Shi
      * @date 2020-01-13
      * @param {any[]} list
-     * @param {number} start
-     * @param {number} end
+     * @param {number} [start=0]
+     * @param {number} [end=list.length-1]
      */
-    public quick(list: any[], start: number, end: number): void {
+    public quick(list: any[], start: number = 0, end: number = list.length - 1): void {
         if (start >= end) { return }
         let pivot: any = list[end];//末尾值为分界值
         let left: number = start;
@@ -173,10 +173,10 @@ export default class Sort {
      * @author Star Shi
      * @date 2020-01-13
      * @param {any[]} list
-     * @param {number} start
-     * @param {number} end
+     * @param {number} [start=0]
+     * @param {number} [end=list.length]
      */
-    public mergeSort(list: any[], start: number, end: number) {
+    public mergeSort(list: any[], start: number = 0, end: number = list.length - 1) {
         if (start >= end) return //如果只有一个数字，直接返回
         let mid: number = Math.floor((start + end) / 2);
         // 递归分治排序
