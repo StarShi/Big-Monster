@@ -12,4 +12,15 @@ describe('test Search', () => {
         expect(search.binary(arr1, 3)).toBe(3);
         expect(search.binary(arr1, 10)).toBe(-1);
     });
+
+    test('test insert', () => {
+        expect(search.insert(arr1, 3)).toBe(3);
+        expect(search.insert(arr1, 10)).toBe(-1);
+    });
+
+    
+    test('test fibonacci', () => {
+        expect(search.insert(arr1, 3)).toBe(3);
+        expect(search.insert(arr1, 10)).toBe(-1);
+    });
 });
