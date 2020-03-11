@@ -17,8 +17,17 @@ export default class Node {
         this.right = null;
     }
 
+    // 设置左孩子
+    public setLeft(node:Node):void{
+        this.left = node;
+    }
+    // 设置有右孩子
+    public setRight(node:Node):void{
+        this.right = node;
+    }
+
     // 前序遍历
-    public preVisit() {
+    public preVisit():void {
         // 输出当前节点数据
         console.log(this.data)
         // 递归遍历左子树
@@ -31,34 +40,34 @@ export default class Node {
         }
     }
     // 中序遍历
-    public midVisit() {
+    public midVisit():void {
         // 递归遍历左子树
         if (this.left !== null) {
-            this.left.preVisit();
+            this.left.midVisit();
         }
         // 输出当前节点数据
         console.log(this.data)
         // 递归遍历右子树
         if (this.right !== null) {
-            this.right.preVisit();
+            this.right.midVisit();
         }
     }
 
     // 后序遍历
-    public postVisit() {
+    public postVisit():void {
         // 递归遍历左子树
         if (this.left !== null) {
-            this.left.preVisit();
+            this.left.postVisit();
         }
         // 递归遍历右子树
         if (this.right !== null) {
-            this.right.preVisit();
+            this.right.postVisit();
         }
         // 输出当前节点数据
         console.log(this.data)
     }
 
-    public toString() {
+    public toString():string {
         return this.data.toString()
     }
 }
