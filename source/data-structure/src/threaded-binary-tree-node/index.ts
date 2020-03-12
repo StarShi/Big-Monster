@@ -1,8 +1,8 @@
 
 /**
- * @description 树的节点
+ * @description 线索化二叉树的节点
  * @author Star Shi
- * @date 2020-03-11
+ * @date 2020-03-12
  * @export
  * @class Node
  */
@@ -10,11 +10,15 @@ export default class Node {
     public data: any;
     public left: Node | null;
     public right: Node | null;
+    public leftType: boolean;//指针类型 false 表示指向左子树  true 表示指向前驱节点
+    public rightType: boolean;//指针类型 false 表示指向右子树  true 表示指向后继节点
 
     public constructor(data: any) {
         this.data = data;
         this.left = null;
         this.right = null;
+        this.leftType = false;
+        this.rightType = false;
     }
 
     // 设置左孩子
@@ -158,11 +162,11 @@ export default class Node {
 
         // 如果 1 和 2 都没有找到要删除的节点
         // 左子树递归删除
-        if(this.left !== null){
+        if (this.left !== null) {
             return this.left.deleteNode(data);
         }
-         // 右子树递归删除
-        if(this.right !== null){
+        // 右子树递归删除
+        if (this.right !== null) {
             return this.right.deleteNode(data);
         }
         return false
