@@ -10,6 +10,7 @@ export default class Node {
     public data: any;
     public left: Node | null;
     public right: Node | null;
+    public parentNode: Node | null;//用于后续遍历
     public leftType: boolean;//指针类型 false 表示指向左子树  true 表示指向前驱节点
     public rightType: boolean;//指针类型 false 表示指向右子树  true 表示指向后继节点
 
@@ -17,6 +18,7 @@ export default class Node {
         this.data = data;
         this.left = null;
         this.right = null;
+        this.parentNode = null;
         this.leftType = false;
         this.rightType = false;
     }
@@ -28,120 +30,6 @@ export default class Node {
     // 设置有右孩子
     public setRight(node: Node): void {
         this.right = node;
-    }
-
-    // 前序遍历
-    public preVisit(): void {
-        // 输出当前节点数据
-        console.log("前序遍历输出=>", this.data)
-        // 递归遍历左子树
-        if (this.left !== null) {
-            this.left.preVisit();
-        }
-        // 递归遍历右子树
-        if (this.right !== null) {
-            this.right.preVisit();
-        }
-    }
-    // 中序遍历
-    public midVisit(): void {
-        // 递归遍历左子树
-        if (this.left !== null) {
-            this.left.midVisit();
-        }
-        // 输出当前节点数据
-        console.log("中序遍历输出=>", this.data)
-        // 递归遍历右子树
-        if (this.right !== null) {
-            this.right.midVisit();
-        }
-    }
-
-    // 后序遍历
-    public postVisit(): void {
-        // 递归遍历左子树
-        if (this.left !== null) {
-            this.left.postVisit();
-        }
-        // 递归遍历右子树
-        if (this.right !== null) {
-            this.right.postVisit();
-        }
-        // 输出当前节点数据
-        console.log("后序遍历输出=>", this.data)
-    }
-
-    // 前序查找
-    public preSearch(data: any): any {
-
-        // 如果找到当前节点
-        if (this.data === data) {
-            return this.data;
-        }
-        let node: any = null;
-        // 递归遍历左子树
-        if (this.left !== null) {
-            node = this.left.preSearch(data);
-        }
-        // 如果在左子树找到
-        if (node !== null) {
-            return node
-        }
-        // 递归遍历右子树
-        if (this.right !== null) {
-            node = this.right.preSearch(data);
-        }
-        return node
-    }
-
-    // 中序查找
-    public midSearch(data: any): any {
-
-        let node: any = null;
-        // 递归遍历左子树
-        if (this.left !== null) {
-            node = this.left.midSearch(data);
-        }
-        // 如果在左子树找到
-        if (node !== null) {
-            return node
-        }
-        // 如果找到当前节点
-        if (this.data === data) {
-            return this.data;
-        }
-        // 递归遍历右子树
-        if (this.right !== null) {
-            node = this.right.midSearch(data);
-        }
-        return node
-    }
-
-    // 中序查找
-    public postSearch(data: any): any {
-
-        let node: any = null;
-        // 递归遍历左子树
-        if (this.left !== null) {
-            node = this.left.postSearch(data);
-        }
-        // 如果在左子树找到
-        if (node !== null) {
-            return node
-        }
-        // 递归遍历右子树
-        if (this.right !== null) {
-            node = this.right.postSearch(data);
-        }
-        // 如果在左子树找到
-        if (node !== null) {
-            return node
-        }
-        // 如果找到当前节点
-        if (this.data === data) {
-            return this.data;
-        }
-        return node
     }
 
     // 递归删除节点

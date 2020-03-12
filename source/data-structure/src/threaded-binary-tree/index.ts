@@ -19,8 +19,16 @@ export default class ThreadedBinaryTree {
         let node: Node | null = null;
         if (index < array.length) {
             node = new Node(array[index])
-            node.left = this.createTree(array, index * 2 + 1);
-            node.right = this.createTree(array, index * 2 + 2);
+            node.left = this.createTree(array, ~~(index * 2 + 1));
+            node.right = this.createTree(array, ~~(index * 2 + 2));
+
+            // 保存父节点 供后续遍历使用
+            if (node.left != null) {
+                node.left.parentNode = node;
+            }
+            if (node.right != null) {
+                node.right.parentNode = node;
+            }
         }
         return node
     }
@@ -56,7 +64,7 @@ export default class ThreadedBinaryTree {
         }
 
     }
-    
+
     // 中序线索化二叉树
     public midThreadedNodes(node: Node | null = this.root): void {
         // 如果node 为 null  不能进行线索化 
@@ -110,60 +118,77 @@ export default class ThreadedBinaryTree {
         this.preNode = node;
 
     }
-    // 前序遍历
+    // 前序线索化二叉树遍历
     public preVisit(): void {
-        if (this.root === null) {
-            return
+        let node: Node | any = this.root;
+        while (node !== null) {
+            // 遍历找到leftType == true 的节点 当leftType === true时，该节点是按照线索化处理后的有效节点，找到前序遍历开始的节点
+            while (node.leftType === false) {
+                console.log("前序线索化二叉树遍历=>", node.data);
+                node = node.left;
+            }
+            console.log("前序线索化二叉树遍历=>", node.data);
+            node = node.right;
         }
-        // 调用节点的前序遍历
-        this.root.preVisit();
     }
-
-    // 中序遍历
+    // 中线索化二叉树遍历
     public midVisit(): void {
-        if (this.root === null) {
-            return
+        let node: Node | any = this.root;
+        while (node !== null) {
+            // 遍历找到leftType == true 的节点 当leftType === true时，该节点是按照线索化处理后的有效节点，找到中序遍历开始的节点
+            while (node.leftType === false) {
+                node = node.left;
+            }
+            // 输出当前节点
+            console.log("中序线索化二叉树遍历=>", node.data);
+            // 如果当前节点 rightType leftType === true，该节点的后继节点存在，继续遍历
+            while (node.rightType === true) {
+                node = node.right;
+                console.log("中序线索化二叉树遍历=>", node.data);
+            }
+            node = node.right;
         }
-        // 调用节点的中序遍历
-        this.root.midVisit();
     }
 
-    // 后序遍历
+    // 后序索化二叉树遍历
     public postVisit(): void {
-        if (this.root === null) {
-            return
-        }
-        // 调用节点的后序遍历
-        this.root.postVisit();
-    }
+        let node: Node | any = this.root;
 
-    // 前序查找
-    public preSearch(data: any): Boolean {
-        if (this.root === null) {
-            return false
+        // 遍历找到leftType == true 的节点 当leftType === true时，该节点是按照线索化处理后的有效节点，找到后序遍历开始的节点
+        while (node !== null && node.leftType === false) {
+            node = node.left;
         }
-        // 调用节点的前序查找
-        return this.root.preSearch(data) !== null;
-    }
 
-    // 中序查找
-    public midSearch(data: any): Boolean {
-        if (this.root === null) {
-            return false
+        // 如果当前节点 rightType leftType === true，该节点的后继节点存在，继续遍历
+        while (node !== null) {
+            if (node.rightType === true) {
+                console.log("后序线索化二叉树遍历=>", node.data);
+                this.preNode = node;
+                node = node.right;
+            } else {
+                // 如果上一个处理的节点是当前节点右节点，即含有右节点的非叶子节点
+                if (node.right === this.preNode) {
+                    console.log("后序线索化二叉树遍历=>", node.data);
+                    if (node === this.root) {//结束遍历
+                        return
+                    }
+                    this.preNode = node;
+                    node = node.parentNode;
+                } else {
+                    // 循环右子树
+                    node = node.right;
+                    while (node !== null && node.leftType === false) {
+                        node = node.left;
+                    }
+                }
+
+            }
         }
-        // 调用节点的中序查找
-        return this.root.midSearch(data) !== null;
-    }
 
-    // 后序查找
-    public postSearch(data: any): Boolean {
-        if (this.root === null) {
-            return false
-        }
-        // 调用节点的后序查找
-        return this.root.postSearch(data) !== null;
-    }
+        console.log("后序线索化二叉树遍历=>", node.data);
+        // node = node.right;
 
+    }
     // 删除节点
     public deleteNode(data: any): boolean {
         // 如果为空树，删除失败

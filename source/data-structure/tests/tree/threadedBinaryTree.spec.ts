@@ -7,32 +7,20 @@ describe('test threaded binary tree', () => {
     test('test preThreadedNodes method of tree', () => {
         binaryTree.setRoot(binaryTree.createTree([1, 2, 3, 4, 5, 6, 7]));
         binaryTree.preThreadedNodes();
-        expect(binaryTree.preNode !=null && binaryTree.preNode.data).toBe(7);
-
+        binaryTree.preVisit();
     });
 
     test('test midThreadedNodes method of tree', () => {
         binaryTree.setRoot(binaryTree.createTree([1, 2, 3, 4, 5, 6, 7]));
         binaryTree.midThreadedNodes();
-        expect(binaryTree.preNode !=null &&  binaryTree.preNode.data).toBe(7);
+        binaryTree.midVisit();
     });
-
 
     test('test postThreadedNodes method of tree', () => {
         binaryTree.setRoot(binaryTree.createTree([1, 2, 3, 4, 5, 6, 7]));
         binaryTree.postThreadedNodes();
-        expect(binaryTree.preNode !=null &&  binaryTree.preNode.data).toBe(1);
+        binaryTree.postVisit();
     });
-
-    // test('test preVisit method of tree', () => {
-    //     binaryTree.preVisit();
-    // });
-    // test('test midVisit method of tree', () => {
-    //     binaryTree.midVisit();
-    // });
-    // test('test postVisit method of tree', () => {
-    //     binaryTree.postVisit();
-    // });
 
     // test('test preSearch method of tree', () => {
     //     expect(binaryTree.preSearch(2)).toBeTruthy;
