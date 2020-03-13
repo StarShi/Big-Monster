@@ -231,6 +231,13 @@ export default class Sort {
         }
     }
 
+    /**
+     * @description 基数排序
+     * @author Star Shi
+     * @date 2020-03-13
+     * @param {any[]} list
+     * @returns
+     */
     public radix(list: any[]) {
         let newList: any[] = deepClone(list);
         let len: number = list.length;
@@ -238,7 +245,7 @@ export default class Sort {
         let maxLength = ("" + max).length;//最大数的长度，以及基数排序次数
         let bucket: TwoDimensionArray = new TwoDimensionArray(10, len);
         let bucketElemCount = new Array(10).fill(0);//每个桶中的有效数据个数
-        for (let i: number = 0, n: number = 1; i < maxLength; i++ , n *= 10) {
+        for (let i: number = 0, n: number = 1; i < maxLength; i++, n *= 10) {
 
             for (let j: number = 0; j < len; j++) {
                 // 取每一位上的数，位数不足为0
@@ -269,6 +276,56 @@ export default class Sort {
         return newList;
     }
 
+    /**
+     * @description 堆排序，将待排序序列构造成一个大顶堆，将堆顶元素与末尾元素进行交换，此时数组末尾就为最大值，将剩余的元素看成待排序序列，重复上面的步骤，直到序列有序为止
+     * @author Star Shi
+     * @date 2020-03-13
+     * @param {any[]} list
+     * @returns {any[]}
+     */
+    public heap(list: any[]): any[] {
+        let newList: any[] = deepClone(list);
+        let len = newList.length;
+
+        // 将无序序列转换成大顶堆
+        for (let i: number = len / 2 - 1; i >= 0; i--) {
+            this.adjustHeap(newList, i, len);
+        }
+        // 将堆顶元素与末尾元素进行交换 
+        // 将剩余的元素看成待排序序列
+        for (let j: number = len - 1; j > 0; j--) {
+            this.swap(newList, 0, j);
+            this.adjustHeap(newList, 0, j)
+        }
+        return newList;
+    }
+
+    /**
+     * @description 将一个数组（二叉树），调整成一个大顶堆
+     * @author Star Shi
+     * @date 2020-03-13
+     * @param {any[]} list 待调整元素
+     * @param {number} index 表示非叶子节点在数组中的索引
+     * @param {number} length 调整的元素长度
+     */
+    public adjustHeap(list: any[], index: number, length: number) {
+        let temp: any = list[index];
+        // 开始调整
+        for (let k: number = 2 * index + 1; k < length; k = 2 * index + 1) {
+            // 如果左子节点小于右子节点
+            if (k + 1 < length && list[k] < list[k + 1]) {
+                k++; // k 指向右子节点
+            }
+            // 如果子节点大于父节点,让子节点与父节点进行交换
+            if (list[k] > temp) {
+                this.swap(list, k, index);
+                index = k; // 将 index 指向 k 继续循环比较，比较该右子节点的子树
+            } else {
+                break;
+            }
+        }
+        list[index] = temp;//将 temp 的值放在调整后的位置
+    }
     // 交换
     public swap(list: any, left: number, right: number) {
         let temp: any = list[left];

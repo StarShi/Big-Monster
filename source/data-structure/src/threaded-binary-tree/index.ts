@@ -189,21 +189,5 @@ export default class ThreadedBinaryTree {
         // node = node.right;
 
     }
-    // 删除节点
-    public deleteNode(data: any): boolean {
-        // 如果为空树，删除失败
-        if (this.root === null) {
-            return false
-        } else {
-            // 如果不为空树，且根节点就是要删除的节点，直接置为空树
-            if (this.root.data === data) {
-                this.root = null;
-                return true
-            } else {// 递归删除
-                return this.root.deleteNode(data);
-            }
-        }
-
-    }
 
 }

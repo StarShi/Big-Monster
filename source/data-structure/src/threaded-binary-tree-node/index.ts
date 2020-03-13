@@ -32,34 +32,6 @@ export default class Node {
         this.right = node;
     }
 
-    // 递归删除节点
-    // 如果删除的节点是叶子节点，则删除该节点
-    // 如果删除的节点是非叶子节点，则删除该树
-
-    public deleteNode(data: any): boolean {
-        // 1、判断左子节点是否为要删除的节点
-        if (this.left !== null && this.left.data === data) {
-            this.left = null;
-            return true
-        }
-        // 2、判断右子节点是否为要删除的节点
-        if (this.right !== null && this.right.data === data) {
-            this.right = null;
-            return true
-        }
-
-        // 如果 1 和 2 都没有找到要删除的节点
-        // 左子树递归删除
-        if (this.left !== null) {
-            return this.left.deleteNode(data);
-        }
-        // 右子树递归删除
-        if (this.right !== null) {
-            return this.right.deleteNode(data);
-        }
-        return false
-    }
-
     public toString(): string {
         return this.data.toString()
     }

@@ -47,4 +47,9 @@ describe('test Sort', () => {
         let newArr = sort.radix(arr);
         expect(newArr.toString()).toBe('3,6,14,53,214,542,748');
     });
+
+    test('test heap', () => {
+        let newArr = sort.heap(arr);
+        expect(newArr.toString()).toBe('0,1,2,3,4,5');
+    });
 });
