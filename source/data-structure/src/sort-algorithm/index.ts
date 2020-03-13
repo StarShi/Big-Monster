@@ -288,7 +288,7 @@ export default class Sort {
         let len = newList.length;
 
         // 将无序序列转换成大顶堆
-        for (let i: number = len / 2 - 1; i >= 0; i--) {
+        for (let i: number = Math.floor(len / 2 - 1); i >= 0; i--) {
             this.adjustHeap(newList, i, len);
         }
         // 将堆顶元素与末尾元素进行交换 
