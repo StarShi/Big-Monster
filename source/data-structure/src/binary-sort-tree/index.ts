@@ -1,7 +1,7 @@
 import Node from '../binary-sort-tree-node'
 
 /**
- * @description 二叉树
+ * @description 二叉排序树
  * @author Star Shi
  * @date 2020-03-11
  * @export
@@ -96,7 +96,7 @@ export default class BinarySortTree {
         } else if (node.left !== null && node.right !== null) { // 如果有两棵子树
             node.value = this.minNode(node.right);
         } else {// 如果只有一棵子树
-            if(parentNode === null){// parentNode 为 null 
+            if(parentNode === null){// parentNode 为 null 即只有两个结点 删除父节点的情况 该父节点为根节点没有父节点
                 this.root = node.left !== null ? node.left : node.right
             }else{
                 if (parentNode.left === node) {
