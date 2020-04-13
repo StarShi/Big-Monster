@@ -51,6 +51,31 @@ export default class Search {
         }
     }
 
+    
+    /**
+     * @description 二分查找 非递归实现
+     * @author Star Shi
+     * @date 2020-04-13
+     * @param {any[]} list
+     * @param {*} value
+     * @returns {number}
+     */
+    public binary_no_recursion(list: any[], value: any): number {
+        let left: number = 0;
+        let right: number = list.length - 1;
+        while (left <= right) {
+            let mid = ~~((left + right) / 2);
+            if (list[mid] === value) {
+                return mid
+            } else if (list[mid] > value) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return -1
+    }
+
     /**
      * @description 插值查找 与二分查找相似，只不过mid的查找方式不同 mid = left +  (right - left) * (findVal - list[left])/ (list[right] - list[left])
      * @author Star Shi

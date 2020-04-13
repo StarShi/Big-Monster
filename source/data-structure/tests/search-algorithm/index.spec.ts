@@ -12,6 +12,11 @@ describe('test Search', () => {
         expect(search.binary(arr1, 3)).toBe(3);
         expect(search.binary(arr1, 10)).toBe(-1);
     });
+    
+    test('test binary_no_recursion', () => {
+        expect(search.binary(arr1, 3)).toBe(3);
+        expect(search.binary(arr1, 10)).toBe(-1);
+    });
 
     test('test insert', () => {
         expect(search.insert(arr1, 3)).toBe(3);
