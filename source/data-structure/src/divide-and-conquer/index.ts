@@ -1,6 +1,22 @@
 
+/**
+ * @description 分而治之
+ * @author Star Shi
+ * @date 2020-04-20
+ * @export
+ * @class DivideAndConquer
+ */
 export default class DivideAndConquer {
 
+    /**
+     * @description 汉诺塔
+     * @author Star Shi
+     * @date 2020-04-20
+     * @param {number} num
+     * @param {string} a
+     * @param {string} b
+     * @param {string} c
+     */
     public hanoitower(num: number, a: string, b: string, c: string) {
         if (num === 1) {
             console.log(`第${num}个盘从${a}->${c}`);
