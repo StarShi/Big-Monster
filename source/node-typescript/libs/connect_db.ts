@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
-import { Database } from "../types/config"; // 加载配置的类型
+import { Database } from "../types/config";
 /**
  * @description 数据库连接类
  * @author Star Shi
