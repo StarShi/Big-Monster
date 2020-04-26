@@ -1,7 +1,8 @@
+
 export default {
-  database: 'test', // 数据库
-  username: 'www', // 用户名
-  password: 'www', // 口令
-  host: 'localhost', // 主机名
+  database: 'my_test', // 数据库
+  username: 'mysql', // 用户名
+  password: 'mysql', // 口令
+  host: '47.107.96.127', // 主机名
   port: 3306 // 端口号
 }
