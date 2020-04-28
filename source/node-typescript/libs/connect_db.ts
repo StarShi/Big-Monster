@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import { Database } from "../types/config";
+import utils  from "./utils";
 /**
  * @description 数据库连接类
  * @author Star Shi
@@ -44,7 +45,8 @@ export default class DB {
       },
     });
     // 添加model
-    sequelize.addModels([__dirname + "/models"]);
+    sequelize.addModels([utils.resolve("models")]);
+    console.log(utils.resolve("models"))
     // 监听连接情况
     sequelize
       .authenticate()
