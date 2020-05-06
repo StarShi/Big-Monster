@@ -18,5 +18,5 @@ app.use(bodyParser());
 app.use(routers.routes()).use(routers.allowedMethods());
 
 // 在端口3000监听:
-app.listen(3001);
+app.listen(3000);
 console.log('app started at port 3000...');

@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
-  ManyToOne,
+  ManyToMany,
 } from "typeorm";
 import User from "./user_model";
 @Entity("role_table")
@@ -14,10 +14,14 @@ export default class Role extends BaseEntity {
   public id!: number;
   @Column()
   public role!: string;
-  @ManyToOne(() => User, user => user.id) // 多对一
-  public users!: string;
-  @CreateDateColumn()
+  @Column({
+    type: "json",
+    nullable: true, //可以为空
+  })
+  @ManyToMany(() => User, (user) => user.roles) // 多对多
+  public users!: User[];
+  @CreateDateColumn({ type: "datetime" })
   public create_time!: Date;
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "datetime" })
   public updete_time!: Date;
 }
