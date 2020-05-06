@@ -1,6 +1,6 @@
-import { Sequelize } from "sequelize-typescript";
+import { createConnection } from "typeorm";
 import { Database } from "../types/config";
-import utils  from "./utils";
+import utils from "./utils";
 /**
  * @description 数据库连接类
  * @author Star Shi
@@ -15,6 +15,9 @@ export default class DB {
   private password: string;
   private port?: number;
   private type: any;
+  private entities: string[];
+  private synchronize: boolean;
+
   constructor(config: Database) {
     this.host = config.host;
     this.database = config.database;
@@ -22,6 +25,9 @@ export default class DB {
     this.password = config.password;
     this.type = config.type || "mysql";
     this.port = config.port || 3306;
+    this.entities = config.entities || ["models/*.ts"];
+    this.synchronize = config.synchronize === true ? true : false;
+    this.connect();
   }
 
   /**
@@ -30,32 +36,24 @@ export default class DB {
    * @date 2020-04-26
    * @returns {Sequelize}
    */
-  public connect(): Sequelize {
-    const sequelize = new Sequelize({
-      database: this.database,
-      username: this.username,
-      password: this.password,
-      host: this.host,
-      dialect: this.type,
-      port: this.port,
-      pool: {
-        max: 10,
-        min: 0,
-        idle: 30000,
-      },
-    });
-    // 添加model
-    sequelize.addModels([utils.resolve("models")]);
-    console.log(utils.resolve("models"))
-    // 监听连接情况
-    sequelize
-      .authenticate()
-      .then(() => {
-        console.log("Connection has been established successfully.");
-      })
-      .catch((err: any) => {
-        console.error("Unable to connect to the database:", err);
+  public async connect() {
+    try {
+      await createConnection({
+        host: this.host,
+        type: this.type,
+        port: this.port,
+        database: this.database,
+        username: this.username,
+        password: this.password,
+        entities: this.entities,
+        synchronize: this.synchronize,
+        extra: {
+          connectionLimit: 10, // 连接池最大连接数量, 查阅资料 建议是  core number  * 2 + n
+        },
       });
-    return sequelize;
+    } catch (error) {
+      //连接出错
+      console.log(error);
+    }
   }
 }

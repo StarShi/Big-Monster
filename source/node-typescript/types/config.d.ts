@@ -11,4 +11,8 @@ export interface Database {
   type?: string;
   // 端口
   port?: number;
+  // 模型入口
+  entities?: string[];
+  // 模型与数据库的表同步更新
+  synchronize?: boolean;
 }

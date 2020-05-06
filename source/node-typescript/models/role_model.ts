@@ -1,25 +1,23 @@
 import {
-  Table,
+  Entity,
   Column,
-  Model,
-  HasMany,
-  CreatedAt,
-  UpdatedAt,
-  ForeignKey
-} from "sequelize-typescript";
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BaseEntity,
+  ManyToOne,
+} from "typeorm";
 import User from "./user_model";
-@Table
-export default class Role extends Model<Role> {
-  @ForeignKey(() => User)
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-  })
+@Entity("role_table")
+export default class Role extends BaseEntity {
+  @PrimaryGeneratedColumn()
   public id!: number;
-  @Column
+  @Column()
   public role!: string;
-  @CreatedAt
+  @ManyToOne(() => User, user => user.id) // 多对一
+  public users!: string;
+  @CreateDateColumn()
   public create_time!: Date;
-  @UpdatedAt
+  @UpdateDateColumn()
   public updete_time!: Date;
 }

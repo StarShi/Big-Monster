@@ -3,11 +3,11 @@ import bodyParser from "koa-bodyparser";
 import routers from "./routers/index";
 import DB from "./libs/connect_db";
 import dbConfig from "./config/db";
+import "reflect-metadata"
 // Sequelize orm
 
 const app = new Koa();
 const db = new DB(dbConfig);
-db.connect();
 // 对于任何请求，app将调用该异步函数处理请求：
 app.use(async (ctx, next) => {
     await next();
