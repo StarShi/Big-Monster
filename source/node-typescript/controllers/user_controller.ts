@@ -5,7 +5,8 @@ export default class UserController {
   public async addUser(ctx:Context) {
     let user = new User();
     user.name = ctx.request.body.name;
-    user.password = ctx.request.body.name.password;
+    user.password = ctx.request.body.password;
+    console.log(ctx.request.body)
     return await user.save()
   }
   // 查询用户
