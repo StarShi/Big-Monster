@@ -1,0 +1,126 @@
+# 搭建 node 企业级应用脚手架
+
+## typescript + koa + typeorm + (mysql)
+
+### 前期准备
+
+1.  新建项目文件
+
+        npm init
+
+2.  进入项目，初始 typescript 配置文件
+
+        npm install -save typescript
+        tsc init
+
+3.  安装项目依赖
+
+        npm install -g nodemon pm2
+        npm install -save koa koa-router koa-bodyparser mysql2 typeorm
+        npm install --save-dev nodemon pm2 ts-node @types/koa @types/koa-router @types/koa-bodyparser
+
+4.  新建文件目录
+
+    ![koa-cli.png](https://i.loli.net/2020/05/07/6zT1X9EJBwZq8SL.png)
+
+### 依赖介绍
+
+#### 中间件
+
+1. [koa-router](https://github.com/ZijianHe/koa-router)：用来处理 koa 框架中的路由
+2. [koa-bodyparser](https://github.com/koajs/bodyparser)：用来处理 koa 框架中请求的 body 传参
+
+#### ORM(Object-Relationl Mapping)
+
+1. [typeorm](https://github.com/typeorm/typeorm)：在关系型数据库和对象之间做一个映射，无需关心底层的数据库和 SQL 语句，直接用对象就可以进行数据库的读写
+2. [mysql2](https://github.com/sidorares/node-mysql2)：数据库插件
+
+#### 项目启动插件
+
+1. [cross-env](https://github.com/kentcdodds/cross-env)：跨平台运行设置和使用环境变量的脚本，主要时用以区分本地开发环境 development、在线测试环境 test、生产环境 production，然后根据不同的环境进行个性配置
+2. [nodemon](https://github.com/remy/nodemon)：热更新插件，可监听文件变化，自动启动服务，启动时占用控制台，只适用于本地开发
+3. [pm2](https://github.com/remy/nodemon)：进程管理工具，可以用来简化应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，启动时后台运行，适用于线上部署
+
+### 编辑配置文件
+
+1. tsconfig.json 配置
+
+   ```json
+   {
+     "compilerOptions": {
+       "target": "es6",
+       "module": "commonjs",
+       "outDir": "dist", //生产环境输出目录
+       "strict": true,
+       "esModuleInterop": true,
+       "experimentalDecorators": true,
+       "emitDecoratorMetadata": true,
+       "forceConsistentCasingInFileNames": true
+     },
+     "include": ["src/*"],
+     "exclude": ["node_modules"]
+   }
+   ```
+
+2. nodemon.json 配置
+   ```json
+   {
+     "restartable": "rs",
+     "ignore": [".git", "node_modules/**", "dist", ".cache", "logs"],
+     "verbose": true,
+     "execMap": {
+       "": "node",
+       "js": "node --harmony",
+       "ts": "ts-node"
+     },
+     "events": {
+       "start": "",
+       "crash": "",
+       "exit": "",
+       "restart": ""
+     },
+     "ext": "js json ts tsx",
+     "watch": ["./**"],
+     "legacy-watch": false
+   }
+   ```
+3. pm2config.json 配置
+
+   ```json
+   {
+     "apps": [
+       {
+         "name": "node-typescript",
+         "script": "./dist/app.js", //必须与生产环境目录一致
+         "cwd": "./",
+         "env": {
+           "NODE_ENV": "development" //开发环境
+         },
+         "env_production": {
+           "NODE_ENV": "production" //生产环境
+         },
+         "env_test": {
+           "NODE_ENV": "test" //测试环境
+         },
+         "watch": true,
+         "ignore_watch": ["node_modules", "logs"],
+         "instances": 1,
+         "error_file": "logs/err.log",
+         "out_file": "logs/out.log",
+         "log_date_format": "YYYY-MM-DD HH:mm:ss"
+       }
+     ]
+   }
+   ```
+
+4. package.json 配置
+   ```json
+   {
+     "scripts": {
+       "build": "tsc",
+       "start": "cross-env NODE_ENV=development nodemon  ./src/app.ts",
+       "pm2": "npm run build && pm2 start pm2config.json --env production",
+       "pm2test": "npm run build && pm2 start pm2config.json --env test"
+     }
+   }
+   ```

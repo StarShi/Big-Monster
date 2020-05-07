@@ -25,16 +25,16 @@ export default class DB {
     this.password = config.password;
     this.type = config.type || "mysql";
     this.port = config.port || 3306;
-    this.entities = config.entities || ["models/*.ts"];
+    this.entities = config.entities;
     this.synchronize = config.synchronize === true ? true : false;
     this.connect();
   }
 
+ 
   /**
-   * @description 连接数据库
+   * @description
    * @author Star Shi
-   * @date 2020-04-26
-   * @returns {Sequelize}
+   * @date 2020-05-07
    */
   public async connect() {
     try {
