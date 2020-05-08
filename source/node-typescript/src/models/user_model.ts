@@ -19,7 +19,7 @@ export default class User extends BaseEntity {
   public password!: string;
   @Column({
     type:"json",
-    nullable: true, //可以为空
+    nullable: true, //字段可以为空
   })
   @ManyToMany(() => Role, (role) => role.users) // 多对多
   @JoinTable()

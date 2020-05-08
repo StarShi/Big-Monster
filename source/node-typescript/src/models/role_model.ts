@@ -16,7 +16,7 @@ export default class Role extends BaseEntity {
   public role!: string;
   @Column({
     type: "json",
-    nullable: true, //可以为空
+    nullable: true, //字段可以为空
   })
   @ManyToMany(() => User, (user) => user.roles) // 多对多
   public users!: User[];

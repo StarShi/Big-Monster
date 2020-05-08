@@ -1,6 +1,5 @@
 import { createConnection } from "typeorm";
 import { Database } from "../types/config";
-import utils from "./utils";
 /**
  * @description 数据库连接类
  * @author Star Shi
@@ -30,9 +29,8 @@ export default class DB {
     this.connect();
   }
 
- 
   /**
-   * @description
+   * @description 进行连接
    * @author Star Shi
    * @date 2020-05-07
    */
