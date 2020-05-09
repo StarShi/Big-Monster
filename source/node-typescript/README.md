@@ -17,6 +17,6 @@
     
 ### 测试环境运行
 
-    npm run test
+    npm run pm2test
         
     
