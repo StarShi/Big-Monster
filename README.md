@@ -6,7 +6,7 @@
 
 ## Node
 
-1. [搭建node + typescript + koa环境](https://github.com/StarShi/Big-Monster/blob/master/blog/%E6%90%AD%E5%BB%BAkoa%2Btypescript%E7%8E%AF%E5%A2%83.md)
+1. [搭建node + typescript + koa环境](https://github.com/StarShi/Big-Monster/blob/master/blog/%E6%90%AD%E5%BB%BAkoa%2Btypescript%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83.md)
 
 ## 数据结构与算法
 
