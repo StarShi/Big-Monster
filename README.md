@@ -15,3 +15,6 @@
 
 ## 测试
 1. [探索前端自动化测试方案](https://github.com/StarShi/Big-Monster/blob/master/blog/%E6%8E%A2%E7%B4%A2%E5%89%8D%E7%AB%AF%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88.md)
+
+## 优化
+1. [vue-cli3.0 项目优化方案总结](https://github.com/StarShi/Big-Monster/blob/master/blog/vue-cli3.0%E9%A1%B9%E7%9B%AE%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93.md)

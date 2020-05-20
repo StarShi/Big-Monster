@@ -171,4 +171,4 @@ gzip_types text/plain application/javascript application/x-javascript text/css a
 gzip_disable "MSIE [1-6]\.";
 ```
 
->注意：可与gzip_static混用，但在本地构建时得保留源文件，当然，保留源文件的的原因还有，开启gizp压缩后，如果客户端不支持gizp，也能访问到构建源文件，保证应用正常访问。
+>注意：可与gzip_static混用，但在本地构建时得保留源文件，当然，保留源文件的最大原因还是，开启gizp压缩后，若客户端不支持gizp，也不会影响应用正常访问。
