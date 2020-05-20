@@ -292,6 +292,7 @@
     > 注意：这里只是最简单的服务应用，你可以选择其他中间件或自己编写中间件，完善更多的功能，比如统一的请求处理中间件、响应中间件、日志文件、异常错误处理等
 
 4.  在 models 中建立模型
+   
     ![model.png](https://i.loli.net/2020/05/08/oe2FTcvU6dGNspP.png)
 
 ```typescript
@@ -379,7 +380,7 @@ export default class Role extends BaseEntity {
 }
 ```
 
-5.  在 controllers 中创建控制器，处理模型逻辑
+1.  在 controllers 中创建控制器，处理模型逻辑
 
 ```typescript
 // src/controllers/user_controllers.ts
@@ -425,6 +426,7 @@ export default class UserController {
    > 注意：以上为了方便在浏览器中直接测试，没有遵循 restful 规范，真实项目中应按照团队要求，编写接口；同时，这里也没有使用其他中间件来实现自动注册接口路由，如有需要，可自行添加；我认为如果直接在控制器中，利用装饰器来注册路由，虽然省去了编写路由文件的步骤，但后期维护起来较为麻烦
 
 7. 视图文件
+   
    为了方便前端项目环境的搭建以及开发，在此将 views 放在根目录下，可根据具体的项目需要来进行配置，如果是前后端分离的单页面应用，则此文件可不要，如果是多页面应用，则需配置静态文件目录，并将打包后的 html 页面放置在 views 下，并配置相应的路由，如果是 SSR 项目，则可直接用 SSR 框架。
 
 ### 结语
