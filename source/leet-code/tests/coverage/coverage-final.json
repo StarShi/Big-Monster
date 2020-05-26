@@ -1,2 +1,0 @@
-{"D:\\shixin\\Big-Monster\\source\\leet-code\\tests\\sum.js": {"path":"D:\\shixin\\Big-Monster\\source\\leet-code\\tests\\sum.js","statementMap":{"0":{"start":{"line":2,"column":2},"end":{"line":2,"column":15}}},"fnMap":{"0":{"name":"sum","decl":{"start":{"line":1,"column":9},"end":{"line":1,"column":12}},"loc":{"start":{"line":1,"column":19},"end":{"line":3,"column":1}},"line":1}},"branchMap":{},"s":{"0":1},"f":{"0":1},"b":{},"_coverageSchema":"1a1c01bbd47fc00a2c39e90264f33305004495a9","hash":"5fa5d320a49ee04393645c10a9a8345d03937d87"}
-}
