@@ -54,7 +54,7 @@ function merge_range_fn_2(arr) {
         break;
       }
     }
-    // 如果没有区间合并，则将输入数组中的当前区间，推到结果数组中
+    // 结果数组循环结束，如果没有区间合并，则将输入数组中的当前区间，推到结果数组中
     if (!flag) {
       result.push(arr[i]);
     }
