@@ -17,7 +17,7 @@ function merge_range_fn_1(arr) {
     let index = result.length - 1;
     let [a, b] = result[index];
     let [c, d] = arr[i];
-    // 如果结果数组中的区间的结束区间 大于等于当前区间的起始区间 则表示可以进行合并
+    // 如果结果数组中的区间的结束区间 大于等于 当前区间的起始区间 则表示可以进行合并
     if (b >= c) {
       result[index] = [a, d];
     } else {
@@ -46,8 +46,8 @@ function merge_range_fn_2(arr) {
     for (let j = 0, len_res = result.length; j < len_res; j++) {
       let [a, b] = result[j];
       let [c, d] = arr[i];
-      // 如果结果数组中的区间的起始区间 小于等于当前区间的结束区间 则表示可以进行合并
-      // 如果结果数组中的区间的结束区间 大于等于当前区间的起始区间 则表示可以进行合并
+      // 如果结果数组中的区间的起始区间 小于等于 当前区间的结束区间 则表示可以进行合并
+      // 如果结果数组中的区间的结束区间 大于等于 当前区间的起始区间 则表示可以进行合并
       if ((b < d && b >= c) || (a >= c && a < d)) {
         result[j] = [Math.min(a, c), Math.max(b, d)];
         flag = true;
