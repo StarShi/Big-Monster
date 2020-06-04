@@ -21,7 +21,7 @@
 
 4.  新建文件目录
 
-  ![node+koa文件目录](https://user-images.githubusercontent.com/31092646/83734465-a1935200-a681-11ea-8a04-80eb27ab4d32.png)
+    ![t0HorD.png](https://s1.ax1x.com/2020/06/04/t0HorD.png)
 
 
 ### 依赖介绍
@@ -294,7 +294,7 @@
 
 4.  在 models 中建立模型
    
-   ![model](https://user-images.githubusercontent.com/31092646/83734659-e28b6680-a681-11ea-8ef3-c2bc6af847be.png)
+    ![t0H4xK.png](https://s1.ax1x.com/2020/06/04/t0H4xK.png)
 
     ```typescript
     // src/models/user_model.ts
