@@ -21,7 +21,8 @@
 
 4.  新建文件目录
 
-    ![koa-cli.png](https://i.loli.net/2020/05/07/6zT1X9EJBwZq8SL.png)
+  ![node+koa文件目录](https://user-images.githubusercontent.com/31092646/83734465-a1935200-a681-11ea-8a04-80eb27ab4d32.png)
+
 
 ### 依赖介绍
 
@@ -293,116 +294,116 @@
 
 4.  在 models 中建立模型
    
-    ![model.png](https://i.loli.net/2020/05/08/oe2FTcvU6dGNspP.png)
+   ![model](https://user-images.githubusercontent.com/31092646/83734659-e28b6680-a681-11ea-8ef3-c2bc6af847be.png)
 
-```typescript
-// src/models/user_model.ts
-// 用户模型
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToMany,
-  BaseEntity,
-  JoinTable,
-} from "typeorm";
-import Role from "./role_model";
+    ```typescript
+    // src/models/user_model.ts
+    // 用户模型
+    import {
+      Entity,
+      Column,
+      PrimaryGeneratedColumn,
+      CreateDateColumn,
+      UpdateDateColumn,
+      ManyToMany,
+      BaseEntity,
+      JoinTable,
+    } from "typeorm";
+    import Role from "./role_model";
 
-@Entity("user_table") // 对应数据库中表的名字，Entity会自动将模型同步到数据库的表中
-export default class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  public id!: number;
+    @Entity("user_table") // 对应数据库中表的名字，Entity会自动将模型同步到数据库的表中
+    export default class User extends BaseEntity {
+      @PrimaryGeneratedColumn()
+      public id!: number;
 
-  @Column()
-  public name!: string;
+      @Column()
+      public name!: string;
 
-  @Column()
-  public password!: string;
+      @Column()
+      public password!: string;
 
-  @Column({
-    type: "json",
-    nullable: true, //字段可以为空
-  })
-  @ManyToMany(() => Role, (role) => role.users) // 多对多
-  @JoinTable()
-  public roles!: Role[];
+      @Column({
+        type: "json",
+        nullable: true, //字段可以为空
+      })
+      @ManyToMany(() => Role, (role) => role.users) // 多对多
+      @JoinTable()
+      public roles!: Role[];
 
-  @Column({
-    default: true, // 给预设值
-  })
-  public is_active!: boolean;
+      @Column({
+        default: true, // 给预设值
+      })
+      public is_active!: boolean;
 
-  @CreateDateColumn()
-  public create_time!: Date;
+      @CreateDateColumn()
+      public create_time!: Date;
 
-  @UpdateDateColumn()
-  public updete_time!: Date;
-}
-```
+      @UpdateDateColumn()
+      public updete_time!: Date;
+    }
+    ```
 
-```typescript
-// src/models/user_model.ts
-// 角色模型
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  BaseEntity,
-  ManyToMany,
-} from "typeorm";
+    ```typescript
+    // src/models/user_model.ts
+    // 角色模型
+    import {
+      Entity,
+      Column,
+      PrimaryGeneratedColumn,
+      CreateDateColumn,
+      UpdateDateColumn,
+      BaseEntity,
+      ManyToMany,
+    } from "typeorm";
 
-import User from "./user_model";
+    import User from "./user_model";
 
-@Entity("role_table")
-export default class Role extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  public id!: number;
+    @Entity("role_table")
+    export default class Role extends BaseEntity {
+      @PrimaryGeneratedColumn()
+      public id!: number;
 
-  @Column()
-  public role!: string;
+      @Column()
+      public role!: string;
 
-  @Column({
-    type: "json",
-    nullable: true, //字段可以为空
-  })
-  @ManyToMany(() => User, (user) => user.roles) // 多对多
-  public users!: User[];
+      @Column({
+        type: "json",
+        nullable: true, //字段可以为空
+      })
+      @ManyToMany(() => User, (user) => user.roles) // 多对多
+      public users!: User[];
 
-  @CreateDateColumn({ type: "datetime" })
-  public create_time!: Date;
+      @CreateDateColumn({ type: "datetime" })
+      public create_time!: Date;
 
-  @UpdateDateColumn({ type: "datetime" })
-  public updete_time!: Date;
-}
+      @UpdateDateColumn({ type: "datetime" })
+      public updete_time!: Date;
+    }
 ```
 
 1.  在 controllers 中创建控制器，处理模型逻辑
 
-```typescript
-// src/controllers/user_controllers.ts
-import { Context } from "koa";
-import User from "../models/user_model";
-import Role from "../models/role_model";
+    ```typescript
+    // src/controllers/user_controllers.ts
+    import { Context } from "koa";
+    import User from "../models/user_model";
+    import Role from "../models/role_model";
 
-export default class UserController {
-  // 添加用户
-  public async addUser(ctx: Context) {
-    let user = new User();
-    user.name = ctx.request.query.name;
-    user.password = ctx.request.query.password;
-    user.roles = await Role.findByIds([1], { select: ["id", "role"] });
-    return await user.save();
-  }
-  // 查询用户
-  public async searchUser(ctx: Context) {
-    ctx.body = await User.find();
-  }
-}
-```
+    export default class UserController {
+      // 添加用户
+      public async addUser(ctx: Context) {
+        let user = new User();
+        user.name = ctx.request.query.name;
+        user.password = ctx.request.query.password;
+        user.roles = await Role.findByIds([1], { select: ["id", "role"] });
+        return await user.save();
+      }
+      // 查询用户
+      public async searchUser(ctx: Context) {
+        ctx.body = await User.find();
+      }
+    }
+    ```
 
 6. 编写路由，绑定控制器中的处理函数，实现简单的 api 接口
 
