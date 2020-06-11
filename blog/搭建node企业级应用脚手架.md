@@ -21,7 +21,7 @@
 
 4.  新建文件目录
 
-    ![t0HorD.png](https://s1.ax1x.com/2020/06/04/t0HorD.png)
+    ![](https://starshi.github.io/my-images/blog/node+koa%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95.png)
 
 
 ### 依赖介绍
@@ -294,7 +294,7 @@
 
 4.  在 models 中建立模型
    
-    ![t0H4xK.png](https://s1.ax1x.com/2020/06/04/t0H4xK.png)
+    ![](https://starshi.github.io/my-images/blog/model.png)
 
     ```typescript
     // src/models/user_model.ts
