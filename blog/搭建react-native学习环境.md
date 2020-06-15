@@ -1,4 +1,4 @@
-# [初学 react 时，安装 react-native 学习环境学习环境](https://github.com/StarShi/Big-Monster/tree/master/source/react-learn)
+# 初学 react-native 时，安装 react-native 学习环境
 
 ## 前期准备
 
