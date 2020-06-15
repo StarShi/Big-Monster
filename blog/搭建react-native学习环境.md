@@ -1,11 +1,11 @@
-# [初学 react 时，安装 react-native 学习环境学习环境](https://github.com/StarShi/Big-Monster/tree/master/source/react-learn)
+# 初学 react-native 时，安装 react-native 学习环境
 
 ## 前期准备
 
 1. 安装 [10.16.3](https://nodejs.org/download/release/v10.16.3/) 版本的 Node
 2. 安装 [2.7.17](https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi) 版本的 Python
 3. 安装 [8u71](https://github.com/frekele/oracle-java/releases/download/8u71-b15/jdk-8u71-windows-x64.exe)版本的 JDK，[Github](https://github.com/frekele/oracle-java/releases)上有备份，官网下载略显复杂，还要注册账号才能下载
-4. 安装 Android Studio，需要科学工具
+4. 安装 [Android Studio](https://developer.android.com/studio)，需要科学工具
 5. 安装 yarn，可以加速 node 模块的下载，npm install -g yarn
 
 ### 安装 Python
