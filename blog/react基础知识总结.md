@@ -406,6 +406,61 @@ React 生命周期图如下：
 
 2. 消息的发布订阅
 
+## 事件
+
+在 React 中 e 是一个合成事件。React 根据 W3C 规范来定义这些合成事件，所以无需担心跨浏览器的兼容性问题。
+
+1. 普通绑定方式
+
+    ```javascript
+    function ActionLink() {
+      function handleClick(e) {
+        e.preventDefault();// 阻止浏览器默认事件
+        console.log("The link was clicked.");
+      }
+
+      return (
+        <a href="#" onClick={handleClick}>
+          点击
+        </a>
+      );
+    }
+    ```
+2. 箭头函数的方式
+
+    ```javascript
+    function ActionLink() {
+      function handleClick(e) {
+        e.preventDefault();// 阻止浏览器默认事件
+        console.log("The link was clicked.");
+      }
+
+      return (
+        <a href="#" onClick={()=>{handleClick()}}>
+          点击
+        </a>
+      );
+    }
+    ```
+
+3. 传递参数
+
+    ```javascript
+    function ActionLink() {
+      function handleClick(e,opt1,opt2) {
+        e.preventDefault();// 阻止浏览器默认事件
+        console.log(e,opt1,opt2);
+        console.log("The link was clicked.");
+      }
+
+      return (
+        <a href="#" onClick={(e)=>{handleClick(e,opt1,opt2)}}>
+          点击
+        </a>
+      );
+    }
+    ```
+
 ## 状态管理（Redux ）
 
 1.  创建 reducer
