@@ -1,3 +1,9 @@
+<!--
+ * @description: 
+ * @author: Star Shi
+ * @Date: 2020-06-15 18:29:49
+ * @LastEditTime: 2020-07-14 19:33:43
+--> 
 # 在 windows 中安装 react-native 学习环境
 
 ## 前期准备
@@ -45,11 +51,16 @@
 
 ## 创建项目
 
-1.  创建
+1.  创建普通项目
 
          npx react-native init AwesomeProject
 
-2.  编译并运行
+2.  创建typescript项目
+
+         npx react-native init AwesomeProject --template react-native-template-typescript
+
+
+3.  编译并运行
 
          cd AwesomeProject
          yarn android
