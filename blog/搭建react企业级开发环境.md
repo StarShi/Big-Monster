@@ -45,6 +45,12 @@
    ```
    yarn add axios
    ```
+
+7. 安装 react-router-dom
+
+   ```
+   yarn add react-router-dom @types/react-router-dom
+   ```
 ## 搭建
 
 ### 创建项目
@@ -275,4 +281,6 @@ export default store;
    ```
 
 ### 封装请求
+
+### 路由
 
