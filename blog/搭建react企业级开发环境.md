@@ -155,7 +155,7 @@ const rootReducer = combineReducers({
 export default rootReducer;
 ```
 
-#### 编辑 redux/index.ts
+#### 编辑 redux/index.ts ,创建状态管理仓库
 
 ```typescript
 // redux/index.ts
@@ -177,7 +177,7 @@ const store = createStore(
 export default store;
 ```
 
-#### 全局绑定 index.tsx
+#### 全局绑定状态管理仓库
 
 ```tsx
 // index.tsx
@@ -556,7 +556,7 @@ const routes: RouteConfig[] = [
 export default routes;
 ```
 
-#### 实现嵌套路由处理组件 RouteWithSubRouters
+#### 实现处理嵌套路由的组件 RouteWithSubRouters
 
 利用 react-router-config 提供的 RouteConfigComponentProps 类型，读取当前匹配路由的子路由列表也即是路由配置中的 routes，遍历子路由列表，实现对路由地址的拼接，根据相应的路由配置返回具体的路由导航。
 
@@ -610,7 +610,7 @@ const RouteWithSubRouters = (props: RouteConfigComponentProps) => {
 export default RouteWithSubRouters;
 ```
 
-#### 配置 BrowserRouter
+#### 注册使用
 
 ```tsx
 // app.tsx
@@ -631,4 +631,3 @@ function App() {
 
 export default App;
 ```
-
