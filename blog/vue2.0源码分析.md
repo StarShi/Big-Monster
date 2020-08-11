@@ -2,7 +2,7 @@
  * @description: 源码分析
  * @author: Star Shi
  * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-03 20:52:06
+ * @LastEditTime: 2020-08-11 15:39:32
 -->
 
 # vue2.0 源码分析
@@ -220,26 +220,144 @@ vue 的数据驱动是通过 MVVM 这种框架来实现的，MVVM 框架主要�
 
    ```javascript
    function parseVNode(vNode) {
-     let nodeType = vNode.nodeType;
+     let type = vNode.type;
      let _node = null;
-     if (nodeType === 1) {
+     if (type === 1) {
        // 如果是元素节点
        let nodeName = vNode.tag;
        _node = document.createElement(nodeName);
        let _attrObj = vNode.data;
-       for (let key of _attrObj) {
-         // 属性名 attrs[i].nodeName 属性值 attrs[i].nodeValue
+       Object.keys(_attrObj).forEach((key) => {
          _node.setAttribute(key, _attrObj[key]);
-       }
+       });
        // 考虑其子元素节点
        let children = vNode.children;
        for (let i = 0, len = children.length; i < len; i++) {
          _node.appendChild(parseVNode(children[i]));
        }
-     } else if (nodeType === 3) {
+     } else if (type === 3) {
        // 如果是文本结点
        _node = document.createTextNode(node.value);
      }
      return _node;
    }
    ```
+
+## 函数柯里化与渲染模型
+
+### 函数柯里化
+
+一个函数原本有多个参数，只传入一个参数，返回一个新的函数，由这个新函数接收剩下的参数来运行得到结果。
+
+> 为什么使用柯里化？
+>
+> 柯里化的可以缓存数据，提升性能。
+
+#### 示例一：判断元素
+
+普通实现，如果有 6 个内置标签，而模板中有 10 个标签需要判断，那么就需要循环 60 次判断。
+
+```javascript
+let tags = "div,p,ul,li,a,img".split(",");
+function isHTMLTag(tagName) {
+  if (tags.indexOf(tagName) > -1) return true;
+  return false;
+}
+```
+
+柯里化实现，循环在构建柯里化函数时执行一次，之后会缓存在内存中，供以调用。
+
+```javascript
+let tags = "div,p,ul,li,a,img".split(",");
+function makeMap(tags) {
+  let set = {};
+  tags.forEach((tag) => {
+    set[tag] = true;
+  });
+  return function (tagName) {
+    return !!set[tagName.toLowerCase()];
+  };
+}
+
+let isHTMLTag = makeMap(tags); // 返回函数
+```
+
+#### 示例二：虚拟 dom 的 render 方法
+
+1. 模板 -> AST(抽象语法树)
+
+2. AST -> VNode(虚拟 dom)
+
+3. VNode -> dom
+
+在 vue 中，模板是不会变的，通过模板生成的 AST 也不会变，vue 通过函数柯里化将虚拟 AST 缓存起来，生成一个函数，该函数只需要传入数据，就可以得到新的虚拟 dom，新的虚拟 dom 与 旧的虚拟 dom 对比，通过 diff 算法，将新的虚拟 dom 的变化更新到旧的虚拟 dom 上，由于旧的虚拟 dom 与 真正的 dom 存在对应关系，所以真正的 dom 会随着旧虚拟 dom 的改变而改变。
+
+> 注意：上述没有利用新的虚拟 dom 直接更新，是因为旧的虚拟 dom 与真正的虚拟 dom 存在一一对应的关系，如果使用新的虚拟 dom 进行跟更新，需要重建这个对应关系
+
+```javascript
+function LikeVue(opt) {
+  // 获取数据
+  this._data = opt.data || {};
+  // 获取模板
+  this._el = opt.el || "#app";
+  this._templateDom = document.querySelector(this._el);
+  this._parent = this._templateDom.parentNode;
+  this.mount(); // 挂载
+}
+
+LikeVue.prototype.mount = function () {
+  this.render = this.createRenderFn();
+  this.mountComponent();
+};
+
+LikeVue.prototype.mountComponent = function () {
+  let mount = function () {
+    this.update(this.render());
+  };
+  mount.call(this);
+};
+
+// 生成 render 函数，目的是缓存抽象语法树(该处简化：由于没有 AST 算法，故而直接利用待渲染的虚拟 dom 来模拟实现AST，)
+LikeVue.prototype.createRenderFn = function () {
+  // vue：将 AST + data => 新的VNode
+  // 模拟：将待渲染的虚拟dom + data => 新的VNode
+  let ast = getVNode(this._templateDom);
+  return function () {
+    return combine(ast, this._data);
+  };
+};
+
+// 将虚拟 dom 渲染到页面中，diff 算法（该处简化：利用新的虚拟dom 直接更新）
+LikeVue.prototype.update = function (tempNode) {
+  this._parent.replaceChild(tempNode, this._templateDom);
+};
+
+let renderMark = /\{\{(.+?)\}\}/g;
+// 将待渲染的虚拟dom 结合 data 生产新的虚拟 dom
+function combine(vNode, data) {
+  let _type = vNode.type;
+  let _data = vNode.data;
+  let _value = vNode.value;
+  let _tag = vNode.tag;
+  let _children = vNode.children;
+
+  let _vNode = null;
+  if (_type === 3) {
+    // 文本节点的处理
+    _value = _value.replace(renderMark, function (_, g) {
+      let key = g.trim();
+      // 分隔渲染层级 {{user.name}} 获取数据
+      let value = getValueByPath(data, key);
+      return value;
+    });
+    _vNode = new VNode(_tag, _data, _value, _type);
+  } else if (_type === 1) {
+    // 元素节点处理
+    _vNode = new VNode(_tag, _data, _value, _type);
+    _children.forEach((_subVNode) => {
+      _vNode.appendChild(combine(_subVNode));
+    });
+  }
+  return _vNode;
+}
+```
