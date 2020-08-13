@@ -2,7 +2,7 @@
  * @description: 源码分析
  * @author: Star Shi
  * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-11 15:39:32
+ * @LastEditTime: 2020-08-13 15:14:10
 -->
 
 # vue2.0 源码分析
@@ -328,8 +328,11 @@ LikeVue.prototype.createRenderFn = function () {
 };
 
 // 将虚拟 dom 渲染到页面中，diff 算法（该处简化：利用新的虚拟dom 直接更新）
-LikeVue.prototype.update = function (tempNode) {
-  this._parent.replaceChild(tempNode, this._templateDom);
+LikeVue.prototype.update = function (vNode) {
+  let realDom = parseVNode(vNode);
+  // this._parent.replaceChild(realDom, this._templateDom);
+  // 需要重新获取元素节点，因为每次 replaceChild 后生成的节点都是新的节点
+  this._parent.replaceChild(realDom, document.querySelector(this._el));
 };
 
 let renderMark = /\{\{(.+?)\}\}/g;
@@ -360,4 +363,150 @@ function combine(vNode, data) {
   }
   return _vNode;
 }
+```
+
+## 响应式原理
+
+### 数据劫持
+
+语法
+
+```javascript
+Object.defineProperty(obj, key, {
+  writeable, // 控制属性是否可读写，若与get、set 同时存在，则无需设置writeable
+  configable, // 控制属性是否可被 defineProperty 设置，是否可被删除
+  enumerable, // 控制对象属性是否可枚举，即能否被 for in 遍历
+  value, // 属性值
+  get() {},
+  set(newValue) {},
+});
+```
+
+使用
+
+```javascript
+let people = {};
+people.name = 0;
+let _age;
+Object.defineProperty(people, "age", {
+  configable: true,
+  enumerable: true,
+  get() {
+    return _age;
+  },
+  set(newValue) {
+    _age = newValue;
+  },
+});
+```
+
+> 注意：想要同时使用 get 、set 方法 ，必须使用一个全局变量来缓存属性值
+
+仿 vue 中的封装
+
+```javascript
+// 简化后的版本
+function defineReactive(target, key, value, enumerable) {
+  //函数内部相当于一个局部作用域，value 在函数内部使用，用来缓存属性值
+  Object.defineProperty(target, key, {
+    configable: true,
+    enumerable: !!enumerable,
+    get() {
+      return value;
+    },
+    set(newValue) {
+      value = newValue;
+    },
+  });
+}
+```
+
+对多层级对象或数组 进行深层递归，实现响应式
+
+```javascript
+function reactify(obj) {
+  let keys = Object.keys(obj);
+  let len = keys.length();
+  for (let i = 0; i < len; i++) {
+    let key = keys[i];
+    let value = obj[key];
+    if (Array.isArray(value)) {
+      for (let j = 0; j < value.length; j++) {
+        reactify(value[j]);
+      }
+    } else if (Object.prototype.toString.call(value) === "[object Object]") {
+      reactify(value);
+    } else {
+      defineReactive(obj, key, value, true);
+    }
+  }
+}
+```
+
+对数组的方法进行处理，使得数组的方法也变成响应式的如 push ,pop 等方法
+
+- 不能直接修改 Array.prototype，这会使所有数组的方法都会改变
+- 修改要进行响应式的数组的原型 \_\_ proto \_\_
+- 原来的继承  myArr.\_\_ proto \_\_  -> Array.prototype
+- 新增一层 myArr.\_\_ proto \_\_  -> array_methods ->  Array.prototype
+```javascript
+let myArr = [];
+// 定义要修改数组方法的列表
+const ARRAY_METHODS = ["push", "pop"];
+// 获取数组原型的所有方法
+let array_methods = Object.create(Array.prototype);
+// 遍历定义的方法列表
+ARRAY_METHODS.forEach((method) => {
+  // 重新扩展方法的功能
+  array_methods[method] = function () {
+    console.log("扩展的功能");
+    // 使得传入数组方法的数据响应式
+    for (let i; i < arguments.length; i++) {
+      reactify(arguments[i])
+    }
+    // 调用原有功能
+    array_methods[method].apply(this, arguments);
+  };
+});
+myArr.__proto__ = array_methods;
+
+// 增加数组响应式
+function reactify(obj) {
+  let keys = Object.keys(obj);
+  let len = keys.length();
+  for (let i = 0; i < len; i++) {
+    let key = keys[i];
+    let value = obj[key];
+    if (Array.isArray(value)) {
+      // 拦截数组的原型方法，扩展响应功能
+      value.__proto__ = array_methods;
+      for (let j = 0; j < value.length; j++) {
+        reactify(value[j]);
+      }
+    } else if (Object.prototype.toString.call(value) === "[object Object]") {
+      reactify(value);
+    } else {
+      defineReactive(obj, key, value, true);
+    }
+  }
+}
+```
+
+扩展函数功能的技巧
+
+- 定义一个临时变量存储原来的函数
+- 重新定义原来的函数
+- 在新定义的函数里，实现扩展功能
+- 调用临时函数中的功能
+
+```javascript
+function func() {
+  console.log("原有的函数功能");
+}
+let tempFunc = func;
+func = function () {
+  tempFunc();
+  console.log("扩展的函数功能");
+};
+func(); // 打印 原有的函数功能 扩展的函数功能
 ```
