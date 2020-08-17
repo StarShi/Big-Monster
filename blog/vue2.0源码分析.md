@@ -2,7 +2,7 @@
  * @description: 源码分析
  * @author: Star Shi
  * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-13 15:14:10
+ * @LastEditTime: 2020-08-17 14:53:47
 -->
 
 # vue2.0 源码分析
@@ -447,8 +447,9 @@ function reactify(obj) {
 
 - 不能直接修改 Array.prototype，这会使所有数组的方法都会改变
 - 修改要进行响应式的数组的原型 \_\_ proto \_\_
-- 原来的继承  myArr.\_\_ proto \_\_  -> Array.prototype
-- 新增一层 myArr.\_\_ proto \_\_  -> array_methods ->  Array.prototype
+- 原来的继承 myArr.\_\_ proto \_\_ -> Array.prototype
+- 新增一层 myArr.\_\_ proto \_\_ -> array_methods -> Array.prototype
+
 ```javascript
 let myArr = [];
 // 定义要修改数组方法的列表
@@ -462,7 +463,7 @@ ARRAY_METHODS.forEach((method) => {
     console.log("扩展的功能");
     // 使得传入数组方法的数据响应式
     for (let i; i < arguments.length; i++) {
-      reactify(arguments[i])
+      reactify(arguments[i]);
     }
     // 调用原有功能
     array_methods[method].apply(this, arguments);
@@ -510,3 +511,244 @@ func = function () {
 };
 func(); // 打印 原有的函数功能 扩展的函数功能
 ```
+
+### 数据代理
+
+实现 vue 实例也可以访问 data 属性的功能，即把 vm.\_data.name 的访问方式，转换成 vm.name，由于 vm.\_data.name 的数据已经是响应式的，所以只需在调用 vm.name 时，去读取 vm.\_data.name 的值便可。
+
+```javascript
+//  target 对象，src 访问路径，prop 读取的属性
+function proxy(target, src, props) {
+  Object.defineProperty(target, props, {
+    configable: true,
+    enumerable: !!enumerable,
+    get() {
+      return target[src][props];
+    },
+    set(newValue) {
+      target[src][props] = newValue;
+    },
+  });
+}
+
+app.name = proxy(app, _data, name);
+```
+
+### 抽取 initData
+
+对 LikeVue 进行抽取封装如下：
+
+```javascript
+// 内部变量以下划线开头，只读数据以$符号开头
+function LikeVue(opt) {
+  // 获取数据
+  this._data = opt.data || {};
+  // 获取模板
+  this._el = opt.el || "#app";
+  this._templateDom = document.querySelector(this._el);
+  this._parent = this._templateDom.parentNode;
+
+  // 渲染
+  this.render();
+}
+
+// 抽取数据初始化
+LikeVue.prototype.initData = function () {
+  let keys = Object.keys(this._data);
+  // 响应式化
+  for (let i = 0, len = keys.length; i < len; i++) {
+    reactify(this._data, this);
+  }
+
+  // 将对象属性的访问 映射 到实例上，利用实例可直接访问数据
+  for (let i = 0, len = keys.length; i < len; i++) {
+    proxy(this, _data, key);
+  }
+};
+
+// 将模板与数据结合得到真正的 dom 元素，并渲染到页面中
+LikeVue.prototype.render = function () {
+  this.compiler();
+};
+
+// 编译，将模板与数据结合得到真正的 dom 元素
+LikeVue.protoptype.compiler = function () {
+  let realDom = this._templateDom.childNode(true); // 拷贝 dom
+  compiler(realDom, this._data);
+  this.update(realDom);
+};
+
+// 更新，将 dom 元素放到页面之中
+LikeVue.protoptype.update = function (tempNode) {
+  this._parent.replaceChild(tempNode, this._templateDom);
+};
+
+let renderMark = /\{\{(.+?)\}\}/g;
+function compiler(template, data) {
+  let childNodes = template.childNodes;
+  for (let i = 0, len = childNodes.length; i < len; i++) {
+    let type = childNodes[i].nodeType;
+    if (type === 3) {
+      let text = childNodes[i].nodeValue;
+      text = text.replace(renderMark, function (_, g) {
+        let key = g.trim();
+        // 分隔渲染层级 {{user.name}} 获取数据
+        let value = getValueByPath(data, key);
+        return value;
+      });
+      childNodes[i].nodeValue = text;
+    } else if (type === 1) {
+      compiler(childNodes[i], data);
+    }
+  }
+}
+// 参数 obj = {user:{name}};
+// 参数 path = "user.name";
+function getValueByPath(obj, path) {
+  let paths = path.split(".");
+  let res = obj;
+  for (let i = 0, len = paths.length; i < len; i++) {
+    res = res[path[i]];
+  }
+  return res;
+}
+
+// 增加数组响应式
+function reactify(obj, vm) {
+  let keys = Object.keys(obj);
+  let len = keys.length();
+  for (let i = 0; i < len; i++) {
+    let key = keys[i];
+    let value = obj[key];
+    if (Array.isArray(value)) {
+      // 拦截数组的原型方法，扩展响应功能
+      value.__proto__ = array_methods;
+      for (let j = 0; j < value.length; j++) {
+        reactify(value[j], vm);
+      }
+    } else if (Object.prototype.toString.call(value) === "[object Object]") {
+      reactify(value, vm);
+    } else {
+      defineReactive(obj, key, value, true);
+    }
+  }
+}
+
+// 简化后的版本
+function defineReactive(target, key, value, enumerable) {
+  //函数内部相当于一个局部作用域，value 在函数内部使用，用来缓存属性值
+  Object.defineProperty(target, key, {
+    configable: true,
+    enumerable: !!enumerable,
+    get() {
+      return value;
+    },
+    set(newValue) {
+      if (typeof newValue === "object" && newValue !== null) {
+        reactify(newValue);
+        value = newValue;
+      } else {
+        value = newValue;
+      }
+    },
+  });
+}
+```
+
+> 注意：由于原始的 reactify 存在递归，如果在其中绑定 proxy,如果内层对象的属性和外层对象的属性有重合，则响应式时，内层对象的属性会覆盖外层对象的属性，例如：{name:"张三",child:{name:"李四"}}。需要另一个循环来实现对象映射读取，即如 initData 中的写法
+
+### 发布订阅模式与事件模型
+
+事件模型
+
+- event 对象
+- on、off、emit 方法
+
+实现
+
+- event 是一个全局对象
+- event.on("事件名",处理函数)，订阅事件
+- event.off(),移除所有事件、或者某一类型的事件、或者某一类型事件的处理函数
+- event.emit("事件名",处理函数)，发布事件，之前订阅事件的处理函数会依次执行
+
+```javascript
+window.event = (function () {
+  var eventObjs = {};
+  return {
+    // 注册或订阅事件 ，可以注册多个事件
+    on: function (type, handler) {
+      if (!eventObjs[type]) {
+        eventObjs[type] = [];
+      }
+      eventObjs[type].push(handler);
+      //  vue 的写法
+      //  (eventObjs[type] || (eventObjs[type] = [])).push(handler)
+    },
+    // 移除事件
+    // 如果没有参数，移除所有事件
+    // 如果带有一个参数，表示移除该事件类型下的所有事件
+    // 如果带有两个参数，表示移除该事件类型下的具体事件
+    off: function (type, handler) {
+      if (arguments.length === 0) {
+        eventObjs = {};
+      } else if (arguments.length === 1) {
+        eventObjs[type] = [];
+      } else if (arguments.length === 2) {
+        let _events = eventObjs[type];
+        if (!_events) return;
+        for (let i = _events.length - 1; i > 0; i--) {
+          if (handler === _events[i]) _events.splice(i, 1);
+        }
+      }
+    },
+
+    // 触发或发布事件，包装参数，传递给事件处理函数
+    emit: function (type) {
+      let args = Array.prototype.slice.call(arguments, 1);
+      let _events = eventObjs[type];
+      if (!_events) return;
+      for (let i = _events.length - 1; i > 0; i--) {
+        if (handler === _events[i]) _events[i].apply(null, args);
+      }
+    },
+  };
+})();
+```
+
+订阅事件
+
+```javascript
+event.on("test", function () {
+  console.log("事件代码块");
+});
+```
+
+发布事件
+
+```javascript
+event.emit("test");
+```
+
+### 依赖收集与派发更新
+
+发布订阅模式的形式不仅仅局限于函数，其形式也可以是对象等
+
+特征：
+
+- 需要中间的全局容器，用来存储可以被触发的东西，例如：函数、对象等
+- 需要定义方法，可以往容器中传入东西
+- 需要定义方法，可以将容器中的东西取出来使用，例如：函数调用，对象的调用等
+
+vue 中的依赖收集与派发更新就是基于发布订阅模式实现的，其思路如下：
+
+1. 当数据读取的时候，会调用 depend 方法，将 data 对应的 watcher 存入全局的 watcher 容器中，
+
+2. 当数据变更的时候，会调用 notify 方法，将全局容器中的所有 watcher 取出一一触发
+
+3. 当数据更新完毕后，会将 watcher 从全局容器中移除
+
+依赖收集：将 watcher 存入全局的容器的过程
+
+派发更新：将全局容器中的 watcher 取出一一触发的过程
+
+> 注意：将每个组件拆分成对应的 watcher 可以提升性能，第一次渲染时，所有 watcher 都会存入全局容器，渲染一一触发，但每当数据有所改变时，只有改变数据对应的 watcher 会放入全局容器，等待更新触发。
