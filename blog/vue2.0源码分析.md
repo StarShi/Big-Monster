@@ -1,8 +1,14 @@
 <!--
+ * @description:
+ * @author: Star Shi
+ * @Date: 2020-08-03 14:37:52
+ * @LastEditTime: 2020-08-18 14:20:21
+-->
+<!--
  * @description: 源码分析
  * @author: Star Shi
  * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-17 14:53:47
+ * @LastEditTime: 2020-08-18 10:42:49
 -->
 
 # vue2.0 源码分析
@@ -548,8 +554,11 @@ function LikeVue(opt) {
   this._templateDom = document.querySelector(this._el);
   this._parent = this._templateDom.parentNode;
 
-  // 渲染
-  this.render();
+  //响应数据
+  this.initData();
+
+  // 挂载
+  this.mount();
 }
 
 // 抽取数据初始化
@@ -566,41 +575,63 @@ LikeVue.prototype.initData = function () {
   }
 };
 
-// 将模板与数据结合得到真正的 dom 元素，并渲染到页面中
-LikeVue.prototype.render = function () {
-  this.compiler();
+LikeVue.prototype.mount = function () {
+  this.render = this.createRenderFn();
+  this.mountComponent();
 };
 
-// 编译，将模板与数据结合得到真正的 dom 元素
-LikeVue.protoptype.compiler = function () {
-  let realDom = this._templateDom.childNode(true); // 拷贝 dom
-  compiler(realDom, this._data);
-  this.update(realDom);
+LikeVue.prototype.mountComponent = function () {
+  let mount = function () {
+    this.update(this.render());
+  };
+  mount.call(this);
 };
 
-// 更新，将 dom 元素放到页面之中
-LikeVue.protoptype.update = function (tempNode) {
-  this._parent.replaceChild(tempNode, this._templateDom);
+// 生成 render 函数，目的是缓存抽象语法树(该处简化：由于没有 AST 算法，故而直接利用待渲染的虚拟 dom 来模拟实现AST，)
+LikeVue.prototype.createRenderFn = function () {
+  // vue：将 AST + data => 新的VNode
+  // 模拟：将待渲染的虚拟dom + data => 新的VNode
+  let ast = getVNode(this._templateDom);
+  return function () {
+    return combine(ast, this._data);
+  };
+};
+
+// 将虚拟 dom 渲染到页面中，diff 算法（该处简化：利用新的虚拟dom 直接更新）
+LikeVue.prototype.update = function (vNode) {
+  let realDom = parseVNode(vNode);
+  // this._parent.replaceChild(realDom, this._templateDom);
+  // 需要重新获取元素节点，因为每次 replaceChild 后生成的节点都是新的节点
+  this._parent.replaceChild(realDom, document.querySelector(this._el));
 };
 
 let renderMark = /\{\{(.+?)\}\}/g;
-function compiler(template, data) {
-  let childNodes = template.childNodes;
-  for (let i = 0, len = childNodes.length; i < len; i++) {
-    let type = childNodes[i].nodeType;
-    if (type === 3) {
-      let text = childNodes[i].nodeValue;
-      text = text.replace(renderMark, function (_, g) {
-        let key = g.trim();
-        // 分隔渲染层级 {{user.name}} 获取数据
-        let value = getValueByPath(data, key);
-        return value;
-      });
-      childNodes[i].nodeValue = text;
-    } else if (type === 1) {
-      compiler(childNodes[i], data);
-    }
+// 将待渲染的虚拟dom 结合 data 生产新的虚拟 dom
+function combine(vNode, data) {
+  let _type = vNode.type;
+  let _data = vNode.data;
+  let _value = vNode.value;
+  let _tag = vNode.tag;
+  let _children = vNode.children;
+
+  let _vNode = null;
+  if (_type === 3) {
+    // 文本节点的处理
+    _value = _value.replace(renderMark, function (_, g) {
+      let key = g.trim();
+      // 分隔渲染层级 {{user.name}} 获取数据
+      let value = getValueByPath(data, key);
+      return value;
+    });
+    _vNode = new VNode(_tag, _data, _value, _type);
+  } else if (_type === 1) {
+    // 元素节点处理
+    _vNode = new VNode(_tag, _data, _value, _type);
+    _children.forEach((_subVNode) => {
+      _vNode.appendChild(combine(_subVNode));
+    });
   }
+  return _vNode;
 }
 // 参数 obj = {user:{name}};
 // 参数 path = "user.name";
@@ -634,7 +665,7 @@ function reactify(obj, vm) {
   }
 }
 
-// 简化后的版本
+// 响应式
 function defineReactive(target, key, value, enumerable) {
   //函数内部相当于一个局部作用域，value 在函数内部使用，用来缓存属性值
   Object.defineProperty(target, key, {
@@ -646,16 +677,59 @@ function defineReactive(target, key, value, enumerable) {
     set(newValue) {
       if (typeof newValue === "object" && newValue !== null) {
         reactify(newValue);
-        value = newValue;
-      } else {
-        value = newValue;
       }
+      value = newValue;
     },
   });
 }
 ```
 
 > 注意：由于原始的 reactify 存在递归，如果在其中绑定 proxy,如果内层对象的属性和外层对象的属性有重合，则响应式时，内层对象的属性会覆盖外层对象的属性，例如：{name:"张三",child:{name:"李四"}}。需要另一个循环来实现对象映射读取，即如 initData 中的写法
+
+### reactify 改写 observer
+
+reactify 存在缺陷，不能对 obj 本身进行响应式处理，需要改写成 observer
+
+```javascript
+// 先判断 obj 的类型
+// 如果是数组，就直接对数据的每一项进行响应式处理
+// 如果是对象，则的对象中的属性进行响应式处理，因为存在递归，所以对象的子对象或子数组的所有成员进行响应式处理
+function observer(obj, vm) {
+  if (Array.isArray(obj)) {
+    obj.__proto__ = array_methods;
+    for (let i = 0; i < obi.length; i++) {
+      observer(obj[i], vm);
+    }
+  } else {
+    let keys = Object.keys(obj);
+    let len = keys.length();
+    for (let i = 0; i < len; i++) {
+      let prop = keys[i];
+      let value = obj[prop];
+      defineReactive.call(vm, obj, prop, value, true);
+    }
+  }
+}
+
+function defineReactive(target, key, value, enumerable) {
+  if (typeof value === "object" && value !== null) {
+    observer(value, this);
+  }
+  Object.defineProperty(target, key, {
+    configable: true,
+    enumerable: !!enumerable,
+    get() {
+      return value;
+    },
+    set(newValue) {
+      if (typeof newValue === "object" && newValue !== null) {
+        observer(newValue, this);
+      }
+      value = newValue;
+    },
+  });
+}
+```
 
 ### 发布订阅模式与事件模型
 
@@ -731,7 +805,7 @@ event.emit("test");
 
 ### 依赖收集与派发更新
 
-发布订阅模式的形式不仅仅局限于函数，其形式也可以是对象等
+发布订阅模式的形式不仅仅局限于函数，其形式也可以是对象等。
 
 特征：
 
@@ -741,7 +815,7 @@ event.emit("test");
 
 vue 中的依赖收集与派发更新就是基于发布订阅模式实现的，其思路如下：
 
-1. 当数据读取的时候，会调用 depend 方法，将 data 对应的 watcher 存入全局的 watcher 容器中，
+1. 当数据读取的时候，会调用 depend 方法，将 data 对应的 watcher 存入全局的容器中，
 
 2. 当数据变更的时候，会调用 notify 方法，将全局容器中的所有 watcher 取出一一触发
 
@@ -752,3 +826,78 @@ vue 中的依赖收集与派发更新就是基于发布订阅模式实现的，�
 派发更新：将全局容器中的 watcher 取出一一触发的过程
 
 > 注意：将每个组件拆分成对应的 watcher 可以提升性能，第一次渲染时，所有 watcher 都会存入全局容器，渲染一一触发，但每当数据有所改变时，只有改变数据对应的 watcher 会放入全局容器，等待更新触发。
+
+### 新增 watcher
+
+原来的 array_methods 是无法传递 vue 实例（this）的，新增 watcher 使得 array_methods 中的 observer 函数调用可以传递 vue 实例（this）；可以将 array_methods 封装的代码，放入 observer 中，但这样就无法体现封装性，也可以使用高阶函数来返回一个函数实现该功能，但 vue 源码中使用的是名为 Watcher 的构造函数。
+
+Watcher 构造函数具有一些方法：
+
+- get 方法，内部方法，用来计算和执行处理函数
+- update 方法，公共的外部方法，用来触发内部的 run 方法
+- run 方法，用来判断内部是使用异步运行还是同步运动，最终会调用内部的 get 方法
+- cleanupDep 方法，清除队列
+
+```javascript
+class Watcher {
+  /**
+   * @param {Object} target vue 实例
+   * @param {Srting | Function}  expOfFn 如果是渲染 watcher 传的就是渲染函数，如果是计算 watcher 传的就是路径表达式
+   */
+  constructor(target, expOfFn) {
+    this.vm = target;
+    this.getter = expOfFn;
+    this.deps = []; // 依赖收集
+    this.depIds = {}; // 是一个set类型，用来保证依赖的唯一性
+    // 一开始就需要渲染，在 vue 中是：this.lazy ? undefined : this.get();
+    this.get();
+  }
+  // 计算，触发 getter
+  private get() {
+    this.getter.call(this.vm, this.vm); // 目前只考虑 expOfFn 是函数的情况，解决了上下文的问题；
+  }
+  // 执行，并判断是懒加载，还是同步执行，还是异步执行
+  // 我们现在只考虑同步执行，在 vue 中是调用 queueWatcher，来触发nextTick进行异步执行
+  private run() {
+    this.get();
+  }
+  // 对外公开的函数，用于触发 run 的执行
+  public update(){
+    this.run();
+  }
+  // 清空依赖队列
+  cleanupDep(){
+     this.deps = [];
+  }
+}
+```
+
+> 注意：watcher 指得是 Watcher 实例
+
+### 引入 Dep
+
+该对象提供依赖收集（depend）功能和派发更新（notify）功能，在 notify 中去调用 update 方法。
+
+依赖收集实际上收集的就是属性，那如何将属性与 watcher 关联起来？
+
+- 在全局准备一个容器 targetStack（可用数组模拟），存储收集到的 watcher
+- 当 Watcher 调用 get 方法的时候，将当前的 Watcher 实例放到全局的容器中去，当 get 结束时，从容器中将该实例移除
+- push 方法，进栈
+- pop 方法，出栈
+- 每一个属性中都含有一个 Dep 对象，存储（data 与 watcher 的对应关系）
+
+```javascript
+class Dep {
+  constructor() {
+    this.subs = []; // 存储的是与当前 Dep 关联的 watcher
+  }
+  // 添加一个 watcher
+  addSub() {}
+  // 移除一个 watcher
+  removeSub() {}
+  // 将当前 Dep 与 watcher 关联
+  depend() {}
+  // 触发与之关联的所有 watcher 的 update 方法，起到更新作用
+  notify() {}
+}
+```
