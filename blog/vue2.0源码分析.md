@@ -2,7 +2,7 @@
  * @description:
  * @author: Star Shi
  * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-18 14:20:21
+ * @LastEditTime: 2020-08-21 14:11:25
 -->
 <!--
  * @description: 源码分析
@@ -869,6 +869,10 @@ class Watcher {
   cleanupDep(){
      this.deps = [];
   }
+  // 将当前的 Dep 与当前的 watcher 关联
+  addDep(dep){
+    this.deps.push(dep);
+  }
 }
 ```
 
@@ -892,12 +896,252 @@ class Dep {
     this.subs = []; // 存储的是与当前 Dep 关联的 watcher
   }
   // 添加一个 watcher
-  addSub() {}
+  addSub(watcher) {
+    this.subs.push(watcher);
+  }
   // 移除一个 watcher
-  removeSub() {}
-  // 将当前 Dep 与 watcher 关联
-  depend() {}
+  removeSub(watcher) {
+    for (let i = this.subs.length - 1; i >= 0; i--) {
+      if (watcher === this.subs[i]) {
+        this.subs.splice(i, 1);
+      }
+    }
+  }
+  // 将当前 Dep 与 当前watcher 关联
+  depend() {
+    if (Dep.target) {
+      this.addSub(Dep.target); // 将当前的 watcher 关联到 dep 上
+      Dep.target.addDep(this); // 调用 watcher 上的方法绑定 dep
+    }
+  }
   // 触发与之关联的所有 watcher 的 update 方法，起到更新作用
-  notify() {}
+  notify() {
+    // 在真实的 vue 中是依次触发 this.subs 中的 watcher 的 update 方法的
+    if (Dep.target) {
+      Dep.target.update();
+    }
+  }
+}
+
+// 全局 watcher
+Dep.target = null;
+
+// 全局 watcher 栈
+let targetStack = [];
+
+// 将当前操作的 watcher 存储到全局容器中
+function pushTarget(target) {
+  // 将全局 watcher 推入栈中
+  targetStack.unshift(target); // vue 中使用的是 push
+  // 将当前 watcher 存储到全局 watcher中
+  Dep.target = target;
+}
+
+// 将当前 watcher 移除
+function popTarget() {
+  targetStack.shift(); // vue 中使用的是 shift
+  Dep.target = this.subs[this.subs.length - 1];
 }
 ```
+
+```javascript
+class Watcher {
+  /**
+   * @param {Object} target vue 实例
+   * @param {Srting | Function}  expOfFn 如果是渲染 watcher 传的就是渲染函数，如果是计算 watcher 传的就是路径表达式
+   */
+  constructor(target, expOfFn) {
+    this.vm = target;
+    this.getter = expOfFn;
+    this.deps = []; // 依赖收集
+    this.depIds = {}; // 是一个set类型，用来保证依赖的唯一性
+    // 一开始就需要渲染，在 vue 中是：this.lazy ? undefined : this.get();
+    this.get();
+  }
+  // 计算，触发 getter
+  private get() {
+    pushTarget(this);
+    this.getter.call(this.vm, this.vm); // 目前只考虑 expOfFn 是函数的情况，解决了上下文的问题；
+    pushTarget();
+  }
+  // 执行，并判断是懒加载，还是同步执行，还是异步执行
+  // 我们现在只考虑同步执行，在 vue 中是调用 queueWatcher，来触发nextTick进行异步执行
+  private run() {
+    this.get();
+  }
+  // 对外公开的函数，用于触发 run 的执行
+  public update(){
+    this.run();
+  }
+  // 清空依赖队列
+  cleanupDep(){
+     this.deps = [];
+  }
+  // 将当前的 Dep 与当前的 watcher 关联
+  addDep(dep){
+    this.deps.push(dep);
+  }
+}
+```
+
+### 再一次封装
+
+```javascript
+// 内部变量以下划线开头，只读数据以$符号开头
+function LikeVue(opt) {
+  // 获取数据
+  this._data = opt.data || {};
+  // 获取模板
+  this._el = opt.el || "#app";
+  this._templateDom = document.querySelector(this._el);
+  this._parent = this._templateDom.parentNode;
+
+  //响应数据
+  this.initData();
+
+  // 挂载
+  this.mount();
+}
+
+// 抽取数据初始化
+LikeVue.prototype.initData = function () {
+  let keys = Object.keys(this._data);
+  // 响应式化
+  for (let i = 0, len = keys.length; i < len; i++) {
+    reactify(this._data, this);
+  }
+
+  // 将对象属性的访问 映射 到实例上，利用实例可直接访问数据
+  for (let i = 0, len = keys.length; i < len; i++) {
+    proxy(this, _data, key);
+  }
+};
+
+LikeVue.prototype.mount = function () {
+  this.render = this.createRenderFn();
+  this.mountComponent();
+};
+
+LikeVue.prototype.mountComponent = function () {
+  let mount = function () {
+    this.update(this.render());
+  };
+  // 监听数据变化
+  new Watcher(this, mount);
+};
+
+// 生成 render 函数，目的是缓存抽象语法树(该处简化：由于没有 AST 算法，故而直接利用待渲染的虚拟 dom 来模拟实现AST，)
+LikeVue.prototype.createRenderFn = function () {
+  // vue：将 AST + data => 新的VNode
+  // 模拟：将待渲染的虚拟dom + data => 新的VNode
+  let ast = getVNode(this._templateDom);
+  return function () {
+    return combine(ast, this._data);
+  };
+};
+
+// 将虚拟 dom 渲染到页面中，diff 算法（该处简化：利用新的虚拟dom 直接更新）
+LikeVue.prototype.update = function (vNode) {
+  let realDom = parseVNode(vNode);
+  // this._parent.replaceChild(realDom, this._templateDom);
+  // 需要重新获取元素节点，因为每次 replaceChild 后生成的节点都是新的节点
+  this._parent.replaceChild(realDom, document.querySelector(this._el));
+};
+
+let renderMark = /\{\{(.+?)\}\}/g;
+// 将待渲染的虚拟dom 结合 data 生产新的虚拟 dom
+function combine(vNode, data) {
+  let _type = vNode.type;
+  let _data = vNode.data;
+  let _value = vNode.value;
+  let _tag = vNode.tag;
+  let _children = vNode.children;
+
+  let _vNode = null;
+  if (_type === 3) {
+    // 文本节点的处理
+    _value = _value.replace(renderMark, function (_, g) {
+      let key = g.trim();
+      // 分隔渲染层级 {{user.name}} 获取数据
+      let value = getValueByPath(data, key);
+      return value;
+    });
+    _vNode = new VNode(_tag, _data, _value, _type);
+  } else if (_type === 1) {
+    // 元素节点处理
+    _vNode = new VNode(_tag, _data, _value, _type);
+    _children.forEach((_subVNode) => {
+      _vNode.appendChild(combine(_subVNode));
+    });
+  }
+  return _vNode;
+}
+// 参数 obj = {user:{name}};
+// 参数 path = "user.name";
+function getValueByPath(obj, path) {
+  let paths = path.split(".");
+  let res = obj;
+  for (let i = 0, len = paths.length; i < len; i++) {
+    res = res[path[i]];
+  }
+  return res;
+}
+
+// 响应
+function observer(obj, vm) {
+  if (Array.isArray(obj)) {
+    obj.__proto__ = array_methods;
+    for (let i = 0; i < obi.length; i++) {
+      observer(obj[i], vm);
+    }
+  } else {
+    let keys = Object.keys(obj);
+    let len = keys.length();
+    for (let i = 0; i < len; i++) {
+      let prop = keys[i];
+      let value = obj[prop];
+      defineReactive.call(vm, obj, prop, value, true);
+    }
+  }
+}
+
+// 响应
+function defineReactive(target, key, value, enumerable) {
+  if (typeof value === "object" && value !== null) {
+    observer(value, this);
+  }
+
+  // 实例化dep
+  let dep = new Dep();
+
+  Object.defineProperty(target, key, {
+    configable: true,
+    enumerable: !!enumerable,
+    get() {
+      // 依赖收集
+      dep.depend();
+      return value;
+    },
+    set(newValue) {
+      if (typeof newValue === "object" && newValue !== null) {
+        observer(newValue, this);
+      }
+      value = newValue;
+      // 派发更新
+      dep.notify();
+    },
+  });
+}
+```
+
+## 源码解读
+
+### 各个文件夹的作用
+
+1. compiler -> 编译：包含模板字符串解析、抽象语法树生成等算法
+2. core -> 核心：vue 的构造函数、生命周期、发布订阅模式等内容
+3. platsforms -> 平台：针对不同的运行环境，有不同的实现，也是 vue 的入口
+4. server -> 服务端：主要是将 vue 用在服务端处理代码
+5. sfc -> 单文件组件
+6. shared -> 公共工具，方法
+
