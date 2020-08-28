@@ -2,7 +2,7 @@
  * @description:
  * @author: Star Shi
  * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-21 14:11:25
+ * @LastEditTime: 2020-08-28 09:51:36
 -->
 <!--
  * @description: 源码分析
@@ -1136,12 +1136,14 @@ function defineReactive(target, key, value, enumerable) {
 
 ## 源码解读
 
-### 各个文件夹的作用
+### src  各个文件夹的作用
 
 1. compiler -> 编译：包含模板字符串解析、抽象语法树生成等算法
 2. core -> 核心：vue 的构造函数、生命周期、发布订阅模式等内容
 3. platsforms -> 平台：针对不同的运行环境，有不同的实现，也是 vue 的入口
 4. server -> 服务端：主要是将 vue 用在服务端处理代码
-5. sfc -> 单文件组件
+5. sfc -> 单文件组件，以脚手架的方式开发
 6. shared -> 公共工具，方法
+
+
 
