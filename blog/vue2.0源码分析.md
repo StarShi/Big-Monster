@@ -2,7 +2,7 @@
  * @description:
  * @author: Star Shi
  * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-28 09:51:36
+ * @LastEditTime: 2020-08-29 17:23:00
 -->
 <!--
  * @description: 源码分析
@@ -1136,7 +1136,7 @@ function defineReactive(target, key, value, enumerable) {
 
 ## 源码解读
 
-### src  各个文件夹的作用
+### src 各个文件夹的作用
 
 1. compiler -> 编译：包含模板字符串解析、抽象语法树生成等算法
 2. core -> 核心：vue 的构造函数、生命周期、发布订阅模式等内容
@@ -1145,5 +1145,19 @@ function defineReactive(target, key, value, enumerable) {
 5. sfc -> 单文件组件，以脚手架的方式开发
 6. shared -> 公共工具，方法
 
+### 源码内容
 
+#### observer
 
+core/observer 文件夹中各个文件的作用
+
+1. array.js -> 创建含有重写数组方法的数组，让所有响应式的数据数组继承该数组
+2. dep.js -> Dep 类
+3. index.js -> Observer 类
+4. scheduler.js -> 任务调度工具，watcher 执行的核心
+5. traverse.js -> 递归遍历响应式数据，触发 Dep 依赖收集
+6. watcher.js -> Watcher 类
+
+#### watch 和 computed
+
+#### patch

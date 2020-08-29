@@ -2,10 +2,13 @@
 
 import config from 'core/config'
 import { warn, cached } from 'core/util/index'
+/* 调试工具中使用 */
 import { mark, measure } from 'core/util/perf'
-
+/* vue 实例 */
 import Vue from './runtime/index'
+/* 节点查询 */
 import { query } from './util/index'
+/* 渲染方法 */
 import { compileToFunctions } from './compiler/index'
 import { shouldDecodeNewlines, shouldDecodeNewlinesForHref } from './util/compat'
 
@@ -14,7 +17,10 @@ const idToTemplate = cached(id => {
   return el && el.innerHTML
 })
 
+// 临时变量保存函数
 const mount = Vue.prototype.$mount
+
+// 扩展原来的$mount 然后再调用原来的 $mount 方法完成扩展
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
@@ -31,6 +37,7 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
+  // 如果没有提供 render 
   if (!options.render) {
     let template = options.template
     if (template) {

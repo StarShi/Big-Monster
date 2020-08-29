@@ -48,14 +48,19 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 export function initState (vm: Component) {
   vm._watchers = []
   const opts = vm.$options
+  // 处理 props 成员
   if (opts.props) initProps(vm, opts.props)
+  // 处理 methods 方法成员
   if (opts.methods) initMethods(vm, opts.methods)
+  // 处理 data 成员，数据响应化
   if (opts.data) {
     initData(vm)
   } else {
     observe(vm._data = {}, true /* asRootData */)
   }
+  // 处理 computed 成员
   if (opts.computed) initComputed(vm, opts.computed)
+  // 处理 watch 成员
   if (opts.watch && opts.watch !== nativeWatch) {
     initWatch(vm, opts.watch)
   }
@@ -97,12 +102,14 @@ function initProps (vm: Component, propsOptions: Object) {
         }
       })
     } else {
+      // 属性响应化
       defineReactive(props, key, value)
     }
     // static props are already proxied on the component's prototype
     // during Vue.extend(). We only need to proxy props defined at
     // instantiation here.
     if (!(key in vm)) {
+      // 将 _props 映射到 vue实例 上 
       proxy(vm, `_props`, key)
     }
   }
@@ -129,6 +136,7 @@ function initData (vm: Component) {
   let i = keys.length
   while (i--) {
     const key = keys[i]
+    // 判断并避免 props data methods 产生同名冲突  
     if (process.env.NODE_ENV !== 'production') {
       if (methods && hasOwn(methods, key)) {
         warn(
@@ -144,15 +152,19 @@ function initData (vm: Component) {
         vm
       )
     } else if (!isReserved(key)) {
+      // 将 data 的所有属性映射到 vue 实例上
       proxy(vm, `_data`, key)
     }
   }
   // observe data
+  // 数据响应式化
   observe(data, true /* asRootData */)
 }
 
 export function getData (data: Function, vm: Component): any {
   // #7573 disable dep collection when invoking data getters
+  // 由于此时是初始化的过程 还没有进行模板渲染 所以无需进行依赖收集 
+  // 传空的话，可以将全局 watcher 设置成 undefined 
   pushTarget()
   try {
     return data.call(vm, vm)
@@ -283,6 +295,7 @@ function initMethods (vm: Component, methods: Object) {
         )
       }
     }
+    // 将 methods 方法绑定到 vue 实例上
     vm[key] = typeof methods[key] !== 'function' ? noop : bind(methods[key], vm)
   }
 }

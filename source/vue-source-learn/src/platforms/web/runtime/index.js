@@ -1,5 +1,10 @@
+/*
+ * @description: 挂载原始的 $mount 方法和 __patch__ 方法 
+ * @Date: 2020-08-25 19:54:34
+ * @LastEditTime: 2020-08-29 10:15:26
+ */
 /* @flow */
-
+/* Vue 实例的位置 */
 import Vue from 'core/index'
 import config from 'core/config'
 import { extend, noop } from 'shared/util'
@@ -27,13 +32,17 @@ Vue.config.getTagNamespace = getTagNamespace
 Vue.config.isUnknownElement = isUnknownElement
 
 // install platform runtime directives & components
+// 挂载指令和组件
 extend(Vue.options.directives, platformDirectives)
 extend(Vue.options.components, platformComponents)
 
 // install platform patch function
-Vue.prototype.__patch__ = inBrowser ? patch : noop
+// 使用虚拟 dom 更新真正 dom 的核心算法 
+// noop 是 no operation 表示不做任何操作
+Vue.prototype.__patch__ = inBrowser ? patch : noop 
 
 // public mount method
+// 定义了原始的 mount 方法
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean

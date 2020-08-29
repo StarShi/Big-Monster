@@ -267,6 +267,8 @@ export function toObject (arr: Array<any>): Object {
  * Perform no operation.
  * Stubbing args to make Flow happy without leaving useless transpiled code
  * with ...rest (https://flow.org/blog/2017/05/07/Strict-Function-Call-Arity/).
+ * 
+ * 什么都不做 用来占位
  */
 export function noop (a?: any, b?: any, c?: any) {}
 
