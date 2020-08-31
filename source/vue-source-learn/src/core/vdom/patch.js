@@ -697,6 +697,9 @@ export function createPatchFunction (backend) {
     }
   }
 
+  // 二次更新的逻辑
+  // 每次数据更新的时候 -> 生成新的虚拟 dom -> diff 旧的虚拟 dom (旧的虚拟 dom 与真实的 dom 是一一对应的关系) -> 更新新的虚拟 dom 到旧的虚拟 dom -> 同步到新的虚拟 dom  
+
   return function patch (oldVnode, vnode, hydrating, removeOnly) {
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode)

@@ -14,16 +14,21 @@ import {
 
 export const MAX_UPDATE_COUNT = 100
 
+// watcher 事件队列
 const queue: Array<Watcher> = []
 const activatedChildren: Array<Component> = []
 let has: { [key: number]: ?true } = {}
 let circular: { [key: number]: number } = {}
+
+// 异步等待状态
 let waiting = false
+// 开始渲染，清空队列，执行 watcher 中的 update 方法
 let flushing = false
 let index = 0
 
 /**
  * Reset the scheduler's state.
+ * 重置队列
  */
 function resetSchedulerState () {
   index = queue.length = activatedChildren.length = 0

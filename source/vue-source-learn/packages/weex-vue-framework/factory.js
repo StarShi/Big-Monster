@@ -491,6 +491,8 @@ function def (obj, key, val, enumerable) {
 
 /**
  * Parse simple path.
+ * 
+ * 解析"xxx.xxx.xxx"格式
  */
 var bailRE = new RegExp(("[^" + (unicodeRegExp.source) + ".$_\\d]"));
 function parsePath (path) {

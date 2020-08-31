@@ -16,6 +16,7 @@ import Dep, { pushTarget, popTarget } from './dep'
 
 import type { SimpleSet } from '../util/index'
 
+// 标识 watcher 确保唯一性
 let uid = 0
 
 /**
@@ -25,12 +26,12 @@ let uid = 0
  */
 export default class Watcher {
   vm: Component;
-  expression: string;
-  cb: Function;
+  expression: string;// 关联表达式，或渲染方法体
+  cb: Function;// 回调函数 定义vue 构造函数时，传入的 watch
   id: number;
   deep: boolean;
   user: boolean;
-  lazy: boolean;
+  lazy: boolean;// 计算属性，和 watch 来控制不要让 watcher 立即执行
   sync: boolean;
   dirty: boolean;
   active: boolean;
@@ -39,8 +40,8 @@ export default class Watcher {
   depIds: SimpleSet;
   newDepIds: SimpleSet;
   before: ?Function;
-  getter: Function;
-  value: any;
+  getter: Function;// 渲染函数或计算函数 expOrFn
+  value: any;// 如果是渲染函数，计算无效，如果是计算属性，值就存在 value 中
 
   constructor (
     vm: Component,
@@ -64,6 +65,7 @@ export default class Watcher {
     } else {
       this.deep = this.user = this.lazy = this.sync = false
     }
+
     this.cb = cb
     this.id = ++uid // uid for batching
     this.active = true
@@ -103,6 +105,7 @@ export default class Watcher {
     let value
     const vm = this.vm
     try {
+      // 表达式调用
       value = this.getter.call(vm, vm)
     } catch (e) {
       if (this.user) {
@@ -113,10 +116,12 @@ export default class Watcher {
     } finally {
       // "touch" every property so they are all tracked as
       // dependencies for deep watching
+      // 递归收集依赖
       if (this.deep) {
         traverse(value)
       }
       popTarget()
+      // 清空收集的依赖数据
       this.cleanupDeps()
     }
     return value
@@ -128,9 +133,11 @@ export default class Watcher {
   addDep (dep: Dep) {
     const id = dep.id
     if (!this.newDepIds.has(id)) {
+      // watcher 关联 dep
       this.newDepIds.add(id)
       this.newDeps.push(dep)
       if (!this.depIds.has(id)) {
+        // dep 关联 watcher 
         dep.addSub(this)
       }
     }
@@ -138,23 +145,25 @@ export default class Watcher {
 
   /**
    * Clean up for dependency collection.
+   * 在二次提交中，归档就是让旧的 deps 和 新的 newDeps 保持一致
    */
   cleanupDeps () {
     let i = this.deps.length
     while (i--) {
       const dep = this.deps[i]
+      // 如果旧的 dep 不在新的 newDeps 中，表示旧的 dep 应该被删除
       if (!this.newDepIds.has(dep.id)) {
         dep.removeSub(this)
       }
     }
     let tmp = this.depIds
-    this.depIds = this.newDepIds
+    this.depIds = this.newDepIds // 将新的 newDepIds 同步旧的 depIds 集合
     this.newDepIds = tmp
-    this.newDepIds.clear()
+    this.newDepIds.clear() // 清空旧的依赖 id 集合
     tmp = this.deps
-    this.deps = this.newDeps
+    this.deps = this.newDeps // 将新的 newDeps 同步旧的 deps 集合
     this.newDeps = tmp
-    this.newDeps.length = 0
+    this.newDeps.length = 0 // 清空旧的 deps
   }
 
   /**
@@ -163,11 +172,11 @@ export default class Watcher {
    */
   update () {
     /* istanbul ignore else */
-    if (this.lazy) {
+    if (this.lazy) { // 主要针对计算属性
       this.dirty = true
-    } else if (this.sync) {
+    } else if (this.sync) { // 用于服务端渲染 立即计算
       this.run()
-    } else {
+    } else { // 本质上就是异步执行 run
       queueWatcher(this)
     }
   }
@@ -178,7 +187,7 @@ export default class Watcher {
    */
   run () {
     if (this.active) {
-      const value = this.get()
+      const value = this.get() // 要么渲染 要么求值
       if (
         value !== this.value ||
         // Deep watchers and watchers on Object/Arrays should fire even
@@ -187,6 +196,7 @@ export default class Watcher {
         isObject(value) ||
         this.deep
       ) {
+        // 如果值不一样 ，触发 回调函数
         // set new value
         const oldValue = this.value
         this.value = value

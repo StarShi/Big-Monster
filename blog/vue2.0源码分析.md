@@ -1,14 +1,9 @@
-<!--
- * @description:
- * @author: Star Shi
- * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-29 17:23:00
--->
+
 <!--
  * @description: 源码分析
  * @author: Star Shi
  * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-18 10:42:49
+ * @LastEditTime: 2020-08-31 18:00:57
 -->
 
 # vue2.0 源码分析
@@ -1161,3 +1156,5 @@ core/observer 文件夹中各个文件的作用
 #### watch 和 computed
 
 #### patch
+
+二次提交：每次数据更新的时候 -> 生成新的虚拟 dom -> diff 旧的虚拟 dom (旧的虚拟 dom 与真实的 dom 是一一对应的关系) -> 更新新的虚拟 dom 到旧的虚拟 dom -> 同步到新的虚拟 dom

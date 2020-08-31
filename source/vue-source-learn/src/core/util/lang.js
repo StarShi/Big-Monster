@@ -17,6 +17,8 @@ export function isReserved (str: string): boolean {
 
 /**
  * Define a property.
+ * 
+ * 将可枚举性变成可控的，递归时获取 key 时，如果是不可枚举的则是访问不到的
  */
 export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
   Object.defineProperty(obj, key, {

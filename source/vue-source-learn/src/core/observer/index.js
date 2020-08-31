@@ -44,14 +44,18 @@ export class Observer {
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this)
+    // 响应式化
     if (Array.isArray(value)) {
+      // 如果是数组,进行递归响应式化
       if (hasProto) {
+        // 判断浏览器是否兼容__proto__
         protoAugment(value, arrayMethods)
       } else {
         copyAugment(value, arrayMethods, arrayKeys)
       }
       this.observeArray(value)
     } else {
+      // 如果是对象，遍历对象属性，响应式化
       this.walk(value)
     }
   }
@@ -85,6 +89,7 @@ export class Observer {
  * the prototype chain using __proto__
  */
 function protoAugment (target, src: Object) {
+  // 完成原型链修改 ,从而使得数组变成响应式的
   /* eslint-disable no-proto */
   target.__proto__ = src
   /* eslint-enable no-proto */
@@ -93,6 +98,8 @@ function protoAugment (target, src: Object) {
 /**
  * Augment a target Object or Array by defining
  * hidden properties.
+ * 
+ * 如果不支持 __proto__ 则直接将方法混入对象中，实现方法响应式
  */
 /* istanbul ignore next */
 function copyAugment (target: Object, src: Object, keys: Array<string>) {
@@ -113,6 +120,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
   }
   let ob: Observer | void
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
+    // 判断是否有 __ob__，如果有，则直接复制返回
     ob = value.__ob__
   } else if (
     shouldObserve &&
@@ -121,6 +129,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
     Object.isExtensible(value) &&
     !value._isVue
   ) {
+    // 如果没有，则构造Observer实例，进行数据响应化
     ob = new Observer(value)
   }
   if (asRootData && ob) {
@@ -141,27 +150,32 @@ export function defineReactive (
 ) {
   const dep = new Dep()
 
+  // 获取属性描述 configurable enumerable writeable 等
   const property = Object.getOwnPropertyDescriptor(obj, key)
   if (property && property.configurable === false) {
     return
   }
 
   // cater for pre-defined getter/setters
+  // 读取定义的 getter/setters
   const getter = property && property.get
   const setter = property && property.set
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
-
+  // 获取 __ob__
   let childOb = !shallow && observe(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
+      // 如果存在 getter/setters 则执行已定义的 getter/setters
       const value = getter ? getter.call(obj) : val
+      // 依赖收集
       if (Dep.target) {
         dep.depend()
         if (childOb) {
+          // 收集子属性
           childOb.dep.depend()
           if (Array.isArray(value)) {
             dependArray(value)
@@ -173,6 +187,7 @@ export function defineReactive (
     set: function reactiveSetter (newVal) {
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
+      // 如果数据没有发生变化 就不会进行派发更新
       if (newVal === value || (newVal !== newVal && value !== value)) {
         return
       }
@@ -187,7 +202,9 @@ export function defineReactive (
       } else {
         val = newVal
       }
+      // 对新值进行响应式化
       childOb = !shallow && observe(newVal)
+      // 派发更新
       dep.notify()
     }
   })

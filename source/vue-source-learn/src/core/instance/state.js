@@ -118,6 +118,8 @@ function initProps (vm: Component, propsOptions: Object) {
 
 function initData (vm: Component) {
   let data = vm.$options.data
+
+  // 获取 data,并将其挂载到vm 实例的 vm._data 上  
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
@@ -136,7 +138,7 @@ function initData (vm: Component) {
   let i = keys.length
   while (i--) {
     const key = keys[i]
-    // 判断并避免 props data methods 产生同名冲突  
+    // 避免 props、data、methods 产生同名冲突  
     if (process.env.NODE_ENV !== 'production') {
       if (methods && hasOwn(methods, key)) {
         warn(
