@@ -4,9 +4,9 @@
  * @date 2020-05-27
  * @param {*} arr
  * @param {*} insertInterval
- * @returns
+ * @returns 结果数组
  */
-function insert_range_fn_1(arr, insertInterval) {
+function insertRange_1(arr, insertInterval) {
   let result = [];
   // 判断是否将插入区间推到结果数组，默认未推
   let flag = false;
@@ -35,4 +35,4 @@ function insert_range_fn_1(arr, insertInterval) {
   return result;
 }
 
-export { insert_range_fn_1 };
+export { insertRange_1 };

@@ -5,7 +5,7 @@
  * @param {*} arr 乱序区间数组
  * @returns  合并后的区间
  */
-function merge_range_fn_1(arr) {
+function mergeRange_1(arr) {
   let result = [];
   // 对区间进行排序
   arr.sort(sortArr);
@@ -34,7 +34,7 @@ function merge_range_fn_1(arr) {
  * @param {*} arr 乱序区间数组
  * @returns  合并后的区间
  */
-function merge_range_fn_2(arr) {
+function mergeRange_2(arr) {
   let result = [];
   // 取出输入区间数组的第一个元素，放入结果数组
   result.push(arr.shift());
@@ -66,4 +66,4 @@ function sortArr(a, b) {
   return a[0] - b[0];
 }
 
-export { merge_range_fn_1, merge_range_fn_2 };
+export { mergeRange_1, mergeRange_2 };
