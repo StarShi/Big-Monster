@@ -30,6 +30,12 @@ class SingleLinkList {
   }
 }
 
+/**
+ * @description 链表的插入排序
+ * @author Star Shi
+ * @date 2020-09-02
+ * @param {*} list
+ */
 function insertSingleLinkList(list) {
   // 如果链表为空或者只有一个结点，则无需排序
   if (list.length <= 1) {
