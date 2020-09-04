@@ -1,10 +1,3 @@
-<!--
- * @description:
- * @author: Star Shi
- * @Date: 2020-06-16 13:59:32
- * @LastEditTime: 2020-07-14 20:32:44
--->
-
 # react-native 学习笔记
 
 ## 常用组件
