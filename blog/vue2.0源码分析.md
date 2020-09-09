@@ -1,11 +1,3 @@
-
-<!--
- * @description: 源码分析
- * @author: Star Shi
- * @Date: 2020-08-03 14:37:52
- * @LastEditTime: 2020-08-31 18:00:57
--->
-
 # vue2.0 源码分析
 
 ## 数据驱动

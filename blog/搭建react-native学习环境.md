@@ -1,9 +1,3 @@
-<!--
- * @description: 
- * @author: Star Shi
- * @Date: 2020-06-15 18:29:49
- * @LastEditTime: 2020-07-14 19:33:43
---> 
 # 在 windows 中安装 react-native 学习环境
 
 ## 前期准备
