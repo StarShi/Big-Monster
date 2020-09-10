@@ -1315,3 +1315,303 @@ let f = F.call(F.prototype);
 
 ### async
 
+#### 概述
+
+async 是 Generator 的语法糖，async 与 Generator 的区别就是， async 函数将 Generator 函数的星号（\*）替换成 async，将 yield 替换成 await，仅此而已。
+
+```javascript
+async function F() {
+  await promiseFunction();
+}
+```
+
+特点：
+
+- 内置执行器：Generator 函数的执行必须靠执行器，所以才有了 co 模块，而 async 函数自带执行器。也就是说，async 函数的执行，与普通函数一模一样，方法名后面跟圆括号即可。
+- 更好的语义：async 和 await，比起星号和 yield，语义更清楚了。async 表示函数里有异步操作，await 表示紧跟在后面的表达式需要等待结果。
+- 更广的适用性：co 模块约定，yield 命令后面只能是 Thunk 函数或 Promise 对象，而 async 函数的 await 命令后面，可以是 Promise 对象和原始类型的值（数值、字符串和布尔值，但这时会自动转成立即 resolved 的 Promise 对象。
+- 返回值是 Promise。
+
+基本用法：
+
+```javascript
+async function getStockPriceByName(name) {
+  const symbol = await getStockSymbol(name);
+  const stockPrice = await getStockPrice(symbol);
+  return stockPrice;
+}
+
+getStockPriceByName("goog").then((result) => {
+  console.log(result);
+});
+```
+
+#### 错误处理
+
+如果 await 后面的异步操作出错，那么等同于 async 函数返回的 Promise 对象被 reject，导致 async 函数的 catch 方法的回调函数可以被调用。
+
+为了防止出错，可用 try...catch 结构进行捕获处理，果有多个 await 命令，可以统一放在 try...catch 结构中。
+
+```javascript
+async function getStockPriceByName(name) {
+  try {
+    const symbol = await getStockSymbol(name);
+    const stockPrice = await getStockPrice(symbol);
+    return stockPrice;
+  } catch (e) {
+    throw new Error("出错了");
+  }
+}
+
+// 如果异步执行成功，则打印价格结果，如果执行出错，则打印错误对象
+getStockPriceByName("goog")
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+```
+
+### Class
+
+ES5 中生成实例对象的传统方法是通过构造函数：
+
+```javascript
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+Person.prototype.toString = function () {
+  return "(" + this.name + ", " + this.age + ")";
+};
+
+let p = new Person("张三", 18);
+```
+
+ES6 中提供了语法糖 class 让对象原型的写法更清晰，更像面向对象编程的语法：
+
+```javascript
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  toString() {
+    return "(" + this.name + ", " + this.age + ")";
+  }
+}
+
+let p = new Person("张三", 18);
+```
+
+其中，constructor 就是构造函数，而 this 关键字则代表实例对象。
+
+构造函数的 prototype 属性，在 ES6 的“类”上面继续存在。事实上，类的所有方法都定义在类的 prototype 属性上面，例如：
+
+```javascript
+class Person {
+  constructor() {}
+
+  toString() {}
+}
+
+// 等同于
+
+Person.prototype = {
+  constructor() {},
+  toString() {},
+};
+```
+
+在类的实例上面调用方法，其实就是调用原型上的方法，但 ES6 中定义的类的方法是不可枚举的，而用采用 ES5 的方式定义原型方法则是可枚举的。
+
+#### constructor 方法
+
+constructor 方法是类的默认方法，通过 new 命令生成对象实例时，自动调用该方法。一个类必须有 constructor 方法，如果没有显式定义，会默认添加一个空的 constructor 方法。
+
+```javascript
+class Person {}
+
+// 等同于
+
+class Person {
+  constructor() {}
+}
+```
+
+> 注意：constructor 方法默认返回实例对象（即 this），但也可以指定返回其他对象。
+
+#### 类的实例
+
+生成类的实例的写法，与 ES5 完全一样，也是使用 new 命令。
+
+与 ES5 一样，实例的属性除非显式定义在其本身（即定义在 this 对象上），否则都是定义在原型上（即定义在 class 上）。
+
+```javascript
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  toString() {
+    return "(" + this.name + ", " + this.age + ")";
+  }
+}
+
+let p = new Person("张三", 18);
+p.hasOwnProperty("x"); // true
+p.hasOwnProperty("y"); // true
+p.hasOwnProperty("toString"); // false
+p.__proto__.hasOwnProperty("toString"); // true
+```
+
+name 和 age 都是实例对象 point 自身的属性（因为定义在 this 变量上），所以 hasOwnProperty 方法返回 true，而 toString 是原型对象的属性（因为定义在 Point 类上），所以 hasOwnProperty 方法返回 false。这些都与 ES5 的行为保持一致。
+
+与 ES5 一样，类的所有实例共享一个原型对象。
+
+```javascript
+let p1 = new Person("张三", 18);
+let p2 = new Person("李四", 18);
+
+p1.__proto__ === p2.__proto__; //true
+```
+
+p1 和 p2 的原型都是 Person.prototype，所以\_\_proto\_\_属性是相等的，这也意味着可以通过实例的\_\_proto\_\_属性为“类”添加方法。
+
+但为了避免对环境产生依赖，通常不建议这么做，而是使用 Object.getPrototypeOf 方法来获取实例对象的原型，然后再为原型添加方法/属性。
+
+#### 取值函数（getter）和存值函数（setter）
+
+在“类”的内部可以使用 get 和 set 关键字，对某个属性设置存值函数和取值函数，拦截该属性的存取行为。
+
+```javascript
+class Person {
+  constructor(name, age) {
+    this.name = name; // 执行setter
+    this.age = age;
+  }
+
+  get name() {
+    console.log("getter");
+    return name + "haha"; // 变量名和函数名相同才能读取原来的值
+  }
+
+  set name(value) {
+    console.log("setter");
+    name = value + "123"; // 变量名和函数名相同才能被赋值
+  }
+}
+let p = new Person("张三", 18);
+p.name; // "getter" "张三123haha"
+p.name = "李四"; // "setter"
+p.name; // "getter" "李四123haha"
+```
+
+属性有对应的存值函数和取值函数，因此赋值和读取行为都被拦截了。
+
+注意：
+
+- 类和模块的内部，默认是严格模式；
+- 类不存在变量提升（hoist）；
+- 类的 name 属性总是返回紧跟在 class 关键字后面的类名；
+- 如果类的某个方法之前加上星号（\*），就表示该方法是一个 Generator 函数；
+  > - 类的方法内部的 this 默认指向类的实例。
+
+#### 静态方法
+
+类相当于实例的原型，所有在类中定义的方法，都会被实例继承。如果在一个方法前，加上 static 关键字，就表示该方法不会被实例继承，而是直接通过类来调用，这就称为“静态方法”。
+
+静态方法不能被类的实例调用，只能由类来直接调用。
+
+```javascript
+class People {
+  static say() {
+    return "hello";
+  }
+  say() {
+    return "hi";
+  }
+}
+
+People.say(); // 'hello'
+
+var p = new People();
+p.say();
+// TypeError: p.sayis not a function
+```
+
+> 注意，
+>
+> - 如果静态方法包含 this 关键字，这个 this 指的是类，而不是实例。
+> - 静态方法可以与非静态方法重名。
+
+父类的静态方法，可以被子类继承，也可以从 super 对象上调用的。
+
+```javascript
+class People {
+  static say() {
+    return "hello";
+  }
+}
+
+class Student extends People {}
+
+class Teacher extends People {
+  // 重写 say 方法，调用原来的方法，并增加特有的内容
+  static say() {
+    return super.say() + " everyone";
+  }
+}
+Student.say(); // 'hello'
+Teacher.say(); // 'hello everyone'
+```
+
+#### 属性置顶
+
+实例属性除了定义在 constructor()方法里面的 this 上面，也可以定义在类的最顶层。
+
+```javascript
+class Foo {
+  constructor() {
+    this.bar = "hello";
+    this.baz = "world";
+  }
+}
+
+// 或者
+
+class Foo {
+  bar = "hello";
+  baz = "world";
+
+  constructor() {}
+}
+```
+
+#### 静态属性
+
+与静态方法相似，只能通过类自身来调用。
+
+```javascript
+class People {
+  static myStaticProp = "hello world";
+  constructor() {
+    console.log(MyClass.myStaticProp); // "hello world"
+  }
+}
+```
+
+#### new.target 属性
+
+new 是从构造函数生成实例对象的命令。ES6 为 new 命令引入了一个 new.target 属性，该属性一般用在构造函数之中，返回 new 命令作用于的那个构造函数。如果构造函数不是通过 new 命令或 Reflect.construct()调用的，new.target 会返回 undefined，因此这个属性可以用来确定构造函数是怎么调用的。
+
+
+### Class 继承
+
+### Module
+
+### Decorator
