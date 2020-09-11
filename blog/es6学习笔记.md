@@ -1609,9 +1609,445 @@ class People {
 
 new 是从构造函数生成实例对象的命令。ES6 为 new 命令引入了一个 new.target 属性，该属性一般用在构造函数之中，返回 new 命令作用于的那个构造函数。如果构造函数不是通过 new 命令或 Reflect.construct()调用的，new.target 会返回 undefined，因此这个属性可以用来确定构造函数是怎么调用的。
 
-
 ### Class 继承
+
+Class 可以通过 extends 关键字实现继承。
+
+```javascript
+class People {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  toString() {
+    return this.name + "-" + this.age; // 调用父类的toString()
+  }
+}
+class Student extends People {
+  constructor(name, age, sex) {
+    super(name, age); // 调用父类的constructor(x, y)
+    this.sex = sex;
+  }
+
+  toString() {
+    return super.toString() + "-" + this.sex; // 调用父类的toString()
+  }
+}
+```
+
+constructor 方法和 toString 方法之中，都出现了 super 关键字，它在这里表示父类的构造函数，用来新建父类的 this 对象。
+
+子类必须在 constructor 方法中调用 super 方法，否则新建实例时会报错。这是因为子类自己的 this 对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。
+
+> 注意：
+>
+> - 如果子类没有定义 constructor 方法，则默认添加的 constructor 会自己隐式的调用 super(...arguments)。
+> - 子类的构造函数中，只有调用 super 之后，才可以使用 this 关键字，否则会报错。
+
+#### Object.getPrototypeOf()
+
+该方法可以用来从子类上获取父类，因此可以使用这个方法判断，一个类是否继承了另一个类。
+
+```javascript
+Object.getPrototypeOf(Student) === People; // true
+```
+
+#### super 关键字
+
+super 这个关键字，既可以当作函数使用，也可以当作对象使用：
+
+- super 作为函数调用时，只能用在子类的构造函数之中，代表父类的构造函数，但是返回的是子类 B 的实例，即 super 内部的 this 指的是 B 的实例。
+
+- super 作为对象时，在普通方法中，指向父类的原型对象；在静态方法中，指向父类。
+
+super 作为对象时，由于 super 指向父类的原型对象，所以定义在父类实例上（constructor 函数内部）的方法或属性，是无法通过 super 调用的。下面代码中，p 是父类 A 实例的属性，super.p 就引用不到它。
+
+```javascript
+class A {
+  constructor() {
+    this.p = 2;
+  }
+}
+
+class B extends A {
+  get m() {
+    return super.p;
+  }
+}
+
+let b = new B();
+b.m; // undefined
+```
+
+在子类普通方法中通过 super 对象调用父类的方法时，方法内部的 this 指向当前的子类实例。即，如果子类和父类具有同名实例属性（构造函数中的属性），并且在子类普通方法中调用父类读取该属性的方法时，获取到的是子类实例的值。
+
+```javascript
+class A {
+  constructor() {
+    this.x = 1;
+  }
+  print() {
+    console.log(this.x);
+  }
+}
+
+class B extends A {
+  constructor() {
+    super();
+    this.x = 2;
+  }
+  m() {
+    super.print();
+  }
+}
+
+let b = new B();
+b.m(); // 2
+```
+
+上面代码中，super.print()虽然调用的是 A.prototype.print()，但是 A.prototype.print()内部的 this 指向子类 B 的实例，导致输出的是 2，而不是 1。也就是说，实际上执行的是 super.print.call(this)。
+
+#### 类的 prototype 属性和 \_\_proto\_\_ 属性
+
+ES5 中每一个对象都有 \_\_proto\_\_ 属性，指向对应的构造函数的 prototype 属性。Class 作为构造函数的语法糖，同时有 prototype 属性和 \_\_proto\_\_ 属性，因此同时存在两条继承链。
+
+- 子类的 \_\_proto\_\_ 属性，表示构造函数的继承，总是指向父类
+
+- 子类 prototype 属性的 \_\_proto\_\_ 属性，表示方法的继承，总是指向父类的 prototype 属性。
+
+例如：
+
+```javascript
+class A {}
+
+class B extends A {}
+
+B.__proto__ === A; // true
+B.prototype.__proto__ === A.prototype; // true
+```
+
+#### 实例的 \_\_proto\_\_ 属性
+
+子类实例的 \_\_proto\_\_ 属性的 \_\_proto\_\_ 属性，指向父类实例的 \_\_proto\_\_ 属性。也就是说，子类实例的原型的原型，是父类的原型。
+
+```javascript
+class A {}
+
+class B extends A {}
+
+let a = new A();
+let b = new B();
+
+b.__proto__ === a.__proto__; // false
+b.__proto__.__proto__ === a.__proto__; // true
+```
+
+#### 原生构造函数的继承
+
+- Boolean()
+- Number()
+- String()
+- Array()
+- Date()
+- Function()
+- RegExp()
+- Error()
+- Object()
+
+以前，这些原生构造函数是无法继承的，比如，不能自己定义一个 Array 的子类。之所以会发生这种情况，是因为子类无法获得原生构造函数的内部属性，通过 Array.apply()或者分配给原型对象都不行。原生构造函数会忽略 apply 方法传入的 this，也就是说，原生构造函数的 this 无法绑定，导致拿不到内部属性。
+
+ES5 是先新建子类的实例对象 this，再将父类的属性添加到子类上，由于父类的内部属性无法获取，导致无法继承原生的构造函数。
+
+ES6 则是先新建父类的实例对象 this，然后再用子类的构造函数修饰 this，使得父类的所有行为都可以继承。
+
+> 注意：继承 Object 的子类，有一个行为差异，继承 Object 的子类，无法通过 super 方法向父类 Object 传参，因为 ES6 改变了 Object 构造函数的行为，一旦发现 Object 方法不是通过 new Object()这种形式调用，ES6 规定 Object 构造函数会忽略参数。
+
+#### Mixin 模式的实现
+
+将多个类的接口“混入”（mix in）另一个类。
+
+```javascript
+function mix(...mixins) {
+  class Mix {
+    constructor() {
+      for (let mixin of mixins) {
+        copyProperties(this, new mixin()); // 拷贝实例属性
+      }
+    }
+  }
+
+  for (let mixin of mixins) {
+    copyProperties(Mix, mixin); // 拷贝静态属性
+    copyProperties(Mix.prototype, mixin.prototype); // 拷贝原型属性
+  }
+
+  return Mix;
+}
+
+function copyProperties(target, source) {
+  // 读取对象的所有属性
+  for (let key of Reflect.ownKeys(source)) {
+    // 复制属性
+    if (key !== "constructor" && key !== "prototype" && key !== "name") {
+      let desc = Object.getOwnPropertyDescriptor(source, key);
+      Object.defineProperty(target, key, desc);
+    }
+  }
+}
+```
 
 ### Module
 
+#### 概述
+
+ES6 模块不是对象，而是通过 export 命令显式指定输出的代码，再通过 import 命令输入。
+
+优势：
+
+- “编译时加载”或者静态加载。
+- 不再需要 UMD 模块格式了，将来服务器和浏览器都会支持 ES6 模块格式。目前，通过各种工具库，其实已经做到了这一点。
+- 将来浏览器的新 API 就能用模块格式提供，不再必须做成全局变量或者 navigator 对象的属性。
+- 不再需要对象作为命名空间（比如 Math 对象），未来这些功能可以通过模块提供。
+
+#### 严格模式
+
+ES6 的模块自动采用严格模式，不管你有没有在模块头部加上"use strict";。
+
+- 主要有以下限制：
+- 变量必须声明后再使用
+- 函数的参数不能有同名属性，否则报错
+- 不能使用 with 语句
+- 不能对只读属性赋值，否则报错
+- 不能使用前缀 0 表示八进制数，否则报错
+- 不能删除不可删除的属性，否则报错
+- 不能删除变量 delete prop，会报错，只能删除属性 delete global[prop]
+- eval 不会在它的外层作用域引入变量
+- eval 和 arguments 不能被重新赋值
+- arguments 不会自动反映函数参数的变化
+- 不能使用 arguments.callee(用于引用该函数的函数体内当前正在执行的函数)
+- 不能使用 arguments.caller(函数对象的一个属性，用于保存调用当前函数的函数)
+- 禁止 this 指向全局对象
+- 不能使用 fn.caller 和 fn.arguments 获取函数调用的堆栈
+- 增加了保留字（比如 protected、static 和 interface）
+
+#### export 命令 和 improt 命令
+
+模块功能主要由两个命令构成：export 和 import。export 命令用于规定模块的对外接口，import 命令用于输入其他模块提供的功能。
+
+导出：
+
+```javascript
+// profile.js
+var firstName = "Michael";
+var lastName = "Jackson";
+var year = 1958;
+
+export { firstName, lastName, year };
+```
+
+引入：
+
+```javascript
+// main.js
+import { firstName, lastName, year } from "./profile.js";
+```
+
+#### 模块的整体加载
+
+用星号（\*）指定一个对象，所有输出值都加载在这个对象上面。
+
+```javascript
+// main.js
+import * as user from "./profile.js";
+user.firstName; // "Michael"
+user.lastName; // "Jackson"
+user.year; // 1958
+```
+
+#### export default 命令
+
+export default 命令，为模块指定默认输出，其他模块加载该模块时，import 命令可以为默认模块指定任意名字。
+
+导出时：
+
+```javascript
+// foo.js
+function foo() {
+  console.log("foo");
+}
+export default foo;
+```
+
+引入时:
+
+```javascript
+// zoo.js
+import zoo from "./foo.js";
+zoo(); // "foo"
+```
+
+export default 命令用于指定模块的默认输出。显然，一个模块只能有一个默认输出，因此 export default 命令只能使用一次。
+
+export default 命令可以和 export 同时使用，表示一个模块既有默认导出，也是其他导出。
+
+导出时：
+
+```javascript
+// foo.js
+function foo() {
+  console.log("foo");
+}
+function coo() {
+  console.log("coo");
+}
+export { coo };
+export default foo;
+```
+
+引入时:
+
+```javascript
+// zoo.js
+import zoo, { coo } from "./foo.js";
+zoo(); // "foo"
+coo(); // "coo"
+```
+
+#### import() 方法
+
+ES2020 提案 引入 import()函数，支持动态加载模块。
+
+用途：
+
+- 按需加载。
+- 条件加载。
+- 动态的模块路径。
+
 ### Decorator
+
+装饰器（Decorator）是一种与类（class）相关的语法，用来注释或修改类和类方法。
+
+#### 类的装饰
+
+如下，testable 就是一个装饰器。它修改了 A 这个类的行为，为它加上了静态属性 isTestable。testable 函数的参数 target 是 A 类本身。
+
+```javascript
+@testable
+class A {
+  // ...
+}
+
+function testable(target) {
+  target.isTestable = true; // 添加静态属性
+}
+
+A.isTestable; // true
+```
+
+装饰器其实就是一个对类进行处理的函数，装饰器函数的第一个参数，就是所要装饰的目标类。
+
+如果觉得一个参数不够用，可以在装饰器外面再封装一层函数。
+
+```javascript
+function testable(isTestable) {
+  return function (target) {
+    target.isTestable = isTestable; // 添加静态属性
+    target.prototype.isWriteable = true; // 添加实例属性
+  };
+}
+
+@testable(true)
+class A {
+  // ...
+}
+```
+
+通过 Object.assign 合并的方式，实现混入装饰器：
+
+```javascript
+function mixins(...list) {
+  return function (target) {
+    Object.assign(target.prototype, ...list);
+  };
+}
+
+const List = {
+  foo() {
+    console.log("foo");
+  },
+};
+
+@mixins(List)
+class MyClass {}
+let obj = new MyClass();
+obj.foo(); // 'foo'
+```
+
+#### 方法的装饰
+
+装饰器不仅可以装饰类，还可以装饰类的属性。
+
+```javascript
+class Person {
+  @readonly
+  name() {
+    return `${this.first} ${this.last}`;
+  }
+}
+function readonly(target, name, descriptor) {
+  descriptor.writable = false; // 使得被装饰的属性或方法只读
+  return descriptor;
+}
+```
+
+与装饰类不同，装饰类的属性时，装饰器函数 readonly 一共可以接受三个参数。
+
+- 第一个参数是类的原型对象；
+- 第二个参数是所要装饰的属性名；
+- 第三个参数是该属性的描述对象；
+
+如果同一个方法有多个装饰器，会像剥洋葱一样，先从外到内进入，然后由内向外执行。
+
+```javascript
+function desc(id) {
+  console.log("test start", id);
+  return (target, property, descriptor) => console.log("test end", id);
+}
+
+class Example {
+  @desc(1)
+  @desc(2)
+  method() {}
+}
+// test start 1
+// test start 2
+// test end 2
+// test end 1
+```
+
+#### 不能装饰函数
+
+因为存在函数提升，装饰器只能用于类和类的方法，不能用于函数。如果一定要用装饰函数，可以采用高阶函数的形式直接执行。
+
+```javascript
+// 函数
+function sayHello(name) {
+  console.log("Hello, " + name);
+}
+// 利用高阶函数，包装原始函数
+function loggingDecorator(wrapped) {
+  return function () {
+    console.log("Start");// 加入日志
+    const result = wrapped.apply(this, arguments);// 执行sayHello
+    console.log("End");
+    return result;
+  };
+}
+
+const wrapped = loggingDecorator(sayHello);
+wrapped("张三");
+// Start
+// Hello, 张三
+// End
+```
