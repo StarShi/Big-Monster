@@ -23,7 +23,6 @@
 
     ![](https://starshi.github.io/my-images/blog/node+koa%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95.png)
 
-
 ### 依赖介绍
 
 #### 中间件
@@ -293,7 +292,7 @@
     > 注意：这里只是最简单的服务应用，你可以选择其他中间件或自己编写中间件，完善更多的功能，比如统一的请求处理中间件、响应中间件、日志文件、异常错误处理等
 
 4.  在 models 中建立模型
-   
+
     ![](https://starshi.github.io/my-images/blog/model.png)
 
     ```typescript
@@ -379,9 +378,9 @@
       @UpdateDateColumn({ type: "datetime" })
       public updete_time!: Date;
     }
-```
+    ```
 
-1.  在 controllers 中创建控制器，处理模型逻辑
+5.  在 controllers 中创建控制器，处理模型逻辑
 
     ```typescript
     // src/controllers/user_controllers.ts
@@ -405,31 +404,31 @@
     }
     ```
 
-6. 编写路由，绑定控制器中的处理函数，实现简单的 api 接口
+6.  编写路由，绑定控制器中的处理函数，实现简单的 api 接口
 
-   ```typescript
-   import Router from "koa-router";
-   import UserController from "../../controllers/user_controller";
-   import RoleController from "../../controllers/role_controller";
+    ```typescript
+    import Router from "koa-router";
+    import UserController from "../../controllers/user_controller";
+    import RoleController from "../../controllers/role_controller";
 
-   const router = new Router();
-   const userController = new UserController();
-   const roleController = new RoleController();
+    const router = new Router();
+    const userController = new UserController();
+    const roleController = new RoleController();
 
-   router.prefix("/api/user"); // 路由前缀
-   router.get("/add_user", userController.addUser); // 注册接口
-   router.get("/search_user", userController.searchUser);
-   router.get("/add_role", roleController.addRole);
-   router.get("/search_role", roleController.searchRole);
-   export default router;
-   ```
+    router.prefix("/api/user"); // 路由前缀
+    router.get("/add_user", userController.addUser); // 注册接口
+    router.get("/search_user", userController.searchUser);
+    router.get("/add_role", roleController.addRole);
+    router.get("/search_role", roleController.searchRole);
+    export default router;
+    ```
 
-   > 注意：以上为了方便在浏览器中直接测试，没有遵循 restful 规范，真实项目中应按照团队要求，编写接口；同时，这里也没有使用其他中间件来实现自动注册接口路由，如有需要，可自行添加；我认为如果直接在控制器中，利用装饰器来注册路由，虽然省去了编写路由文件的步骤，但后期维护起来较为麻烦
+    > 注意：以上为了方便在浏览器中直接测试，没有遵循 restful 规范，真实项目中应按照团队要求，编写接口；同时，这里也没有使用其他中间件来实现自动注册接口路由，如有需要，可自行添加；我认为如果直接在控制器中，利用装饰器来注册路由，虽然省去了编写路由文件的步骤，但后期维护起来较为麻烦
 
-7. 视图文件
-   
-   为了方便前端项目环境的搭建以及开发，在此将 views 放在根目录下，可根据具体的项目需要来进行配置，如果是前后端分离的单页面应用，则此文件可不要，如果是多页面应用，则需配置静态文件目录，并将打包后的 html 页面放置在 views 下，并配置相应的路由，如果是 SSR 项目，则可直接用 SSR 框架。
+7.  视图文件
+
+    为了方便前端项目环境的搭建以及开发，在此将 views 放在根目录下，可根据具体的项目需要来进行配置，如果是前后端分离的单页面应用，则此文件可不要，如果是多页面应用，则需配置静态文件目录，并将打包后的 html 页面放置在 views 下，并配置相应的路由，如果是 SSR 项目，则可直接用 SSR 框架。
 
 ### 结语
 
-至此，typescript + koa + typeorm + mysql的开发环境的搭建算是初步完成，在后续的使用过程中，还会对该脚手架进行完善和补充，如果你有好的建议，欢迎联系~
+至此，typescript + koa + typeorm + mysql 的开发环境的搭建算是初步完成，在后续的使用过程中，还会对该脚手架进行完善和补充，如果你有好的建议，欢迎联系~
