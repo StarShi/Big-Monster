@@ -1,6 +1,7 @@
 import {
   SingleLinkList,
   insertSingleLinkList,
+  mergeSingleLinkList,
 } from "../../src/sort/link-list-sort";
 
 describe("test single-link-list", () => {
@@ -26,11 +27,24 @@ describe("test single-link-list", () => {
     let temp = singleLinkList.head;
     let index = 0;
     let arr = ["1", "2", "3", "4"];
-    // 遍历链表，判断是否与数组中的结果一直
+    // 遍历链表，判断是否与数组中的结果一致
     while (temp.next !== null) {
       temp = temp.next;
       expect(temp.toString()).toBe(arr[index]);
       index++;
+    }
+  });
+
+  test("mergeSingleLinkList ", () => {
+    let list = mergeSingleLinkList(singleLinkList);
+    let temp = list;
+    let index = 0;
+    let arr = ["1", "2", "3", "4"];
+    // 遍历链表，判断是否与数组中的结果一致
+    while (temp !== null) {
+      expect(temp.toString()).toBe(arr[index]);
+      index++;
+      temp = temp.next;
     }
   });
 });
