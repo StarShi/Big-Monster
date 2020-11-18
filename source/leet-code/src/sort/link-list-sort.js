@@ -94,6 +94,7 @@ function mergeSingleLinkList(list) {
 function mergeSingleLinkNode(left, right) {
   let list = new SingleLinkList();
   let res = list.head;
+
   while (left && right) {
     if (left.data < right.data) {
       list.head.next = left;
@@ -105,6 +106,7 @@ function mergeSingleLinkNode(left, right) {
     // 将两个值中最小值的至于链表尾部
     list.head = list.head.next;
     // 将较大的值放在较小的值之后
+    list.head.next = left || right;
   }
   return res.next;
 }
