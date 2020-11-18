@@ -102,8 +102,9 @@ function mergeSingleLinkNode(left, right) {
       list.head.next = right;
       right = right.next;
     }
+    // 将两个值中最小值的至于链表尾部
     list.head = list.head.next;
-    list.head.next = left || right;
+    // 将较大的值放在较小的值之后
   }
   return res.next;
 }

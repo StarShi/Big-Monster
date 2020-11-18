@@ -36,6 +36,11 @@ describe("test single-link-list", () => {
   });
 
   test("mergeSingleLinkList ", () => {
+    let singleLinkList = new SingleLinkList();
+    singleLinkList.appendNode(4);
+    singleLinkList.appendNode(2);
+    singleLinkList.appendNode(1);
+    singleLinkList.appendNode(3);
     let list = mergeSingleLinkList(singleLinkList);
     let temp = list;
     let index = 0;
