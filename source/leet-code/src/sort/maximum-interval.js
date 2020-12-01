@@ -1,5 +1,11 @@
 
-// 求间距
+/**
+ * @description 求数组相邻元素之间最大的差值
+ * @author Star Shi
+ * @date 2020-12-01
+ * @param {*} arr
+ * @returns 返回最大差值
+ */
 function maximunmInterval(arr) {
   let len = arr.length;
   let maxNum = 0;
