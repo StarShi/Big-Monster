@@ -13,10 +13,11 @@
 3. [搭建 react 企业级开发环境](https://github.com/StarShi/Big-Monster/blob/master/blog/%E6%90%AD%E5%BB%BAreact%E4%BC%81%E4%B8%9A%E7%BA%A7%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83.md)
 4. [react 从入门到放弃](https://github.com/StarShi/Big-Monster/blob/master/blog/react%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)
 
-## Node
+## Node & NPM
 
 1. [搭建 node + typescript + koa 环境](https://github.com/StarShi/Big-Monster/blob/master/blog/%E6%90%AD%E5%BB%BAkoa%2Btypescript%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83.md)
 2. [搭建 node 企业级应用脚手架](https://github.com/StarShi/Big-Monster/blob/master/blog/%E6%90%AD%E5%BB%BAnode%E4%BC%81%E4%B8%9A%E7%BA%A7%E5%BA%94%E7%94%A8%E8%84%9A%E6%89%8B%E6%9E%B6.md)
+3. [在 linux 上搭建 npm 私有仓库](https://github.com/StarShi/Big-Monster/blob/master/blog/%e5%9c%a8linux%e4%b8%8a%e6%90%ad%e5%bb%banpm%e7%a7%81%e6%9c%89%e4%bb%93%e5%ba%93.md)
 
 ## JS & TS & ES6
 
@@ -34,6 +35,10 @@
 ## 优化
 
 1. [vue-cli3.0 项目优化方案总结](https://github.com/StarShi/Big-Monster/blob/master/blog/vue-cli3.0%E9%A1%B9%E7%9B%AE%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93.md)
+
+## 规范
+
+1. [eslint 从入门到放弃](https://github.com/StarShi/Big-Monster/blob/master/blog/eslint%e4%bb%8e%e5%85%a5%e9%97%a8%e5%88%b0%e6%94%be%e5%bc%83.md)
 
 ## 笔记
 
