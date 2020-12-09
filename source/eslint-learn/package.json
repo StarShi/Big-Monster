@@ -4,12 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint":"eslint ./src --ext .js"
+    "lint": "eslint ./src --ext .js --fix"
   },
   "author": "shixin007",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "eslint": "^7.15.0"
+    "eslint": "^7.15.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-prettier": "^3.2.0",
+    "husky": "^4.3.5",
+    "prettier": "^2.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }
