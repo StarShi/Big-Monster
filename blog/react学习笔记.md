@@ -55,7 +55,7 @@ React 定义的一种类似 XML 的 js 扩展语法:XML + JS
 
 1. 创建
 
-   ```
+   ```js
    function MyComponent(){
        console.log(this);//此处的this是undefined 因为babel编译时使用的时严格模式
    	retrun <h2>工厂函数组件</h2>
@@ -64,29 +64,30 @@ React 定义的一种类似 XML 的 js 扩展语法:XML + JS
 
 2. 渲染
 
-   ```
+   ```js
    //React 自动调用与标签同名的工厂函数
-   React.render(<MyComponent/>)
+   React.render(<MyComponent />);
    ```
 
 #### ES6 类创建组件（ES6 的类默认使用严格模式）
 
 1. 创建
 
-   ```
-   class MyComponent extends React.Component{
-       render(){//重写父类的render方法、
-           console.log(this);//指向实力对象
-           return <h2>ES6类组件</h2>
-       }
+   ```js
+   class MyComponent extends React.Component {
+     render() {
+       //重写父类的render方法、
+       console.log(this); //指向实力对象
+       return <h2>ES6类组件</h2>;
+     }
    }
    ```
 
 2. 渲染
 
-   ```
+   ```js
    //React 自动调用与标签同名的组件类，生成实例组件，随后自动调用其render方法
-   React.render(<MyComponent/>)
+   React.render(<MyComponent />);
    ```
 
 ## 组件的三大属性
@@ -95,7 +96,7 @@ React 定义的一种类似 XML 的 js 扩展语法:XML + JS
 
 1. 初始化状态
 
-   ```
+   ```js
    constructor(props) {
        super(props);
        this.state = {
@@ -107,17 +108,17 @@ React 定义的一种类似 XML 的 js 扩展语法:XML + JS
 
 2. 读取某个状态的值
 
-   ```
-   this.state.propertyName1
+   ```js
+   this.state.propertyName1;
    ```
 
 3. 更新状态
 
-   ```
+   ```js
    this.setState({
-       propertyName1: value1,
-       propertyName2: value2,
-   })
+     propertyName1: value1,
+     propertyName2: value2,
+   });
    ```
 
    注意：
@@ -128,46 +129,50 @@ React 定义的一种类似 XML 的 js 扩展语法:XML + JS
 
 4. 代码示例：
 
-   ```
+   ```js
    class Weather extends React.Component {
-       constructor(props) {
-           super(props);
-           this.state = {
-               isHot: true
-           };
-           this.change = this.change.bind(this)
-       }
-       //React 将自定义的方法中的this 全部改成了undefined
-       change() {
-           let { isHot } = this.state
-           isHot = !isHot;
-           //状态不能直接更新，状态也不可直接修改，若想修改必须使用变量缓存状态，修改变量的值，用setState更新
-           //更新状态时，必须使用setState方法，否则React不能被监听到
-           this.setState({isHot});
-       }
-       render() {
-           let { isHot } = this.state
-           return <h1 onClick={this.change}>今天天气很{isHot ? '炎热' : '凉爽'}</h1>
-       }
+     constructor(props) {
+       super(props);
+       this.state = {
+         isHot: true,
+       };
+       this.change = this.change.bind(this);
+     }
+     //React 将自定义的方法中的this 全部改成了undefined
+     change() {
+       let { isHot } = this.state;
+       isHot = !isHot;
+       //状态不能直接更新，状态也不可直接修改，若想修改必须使用变量缓存状态，修改变量的值，用setState更新
+       //更新状态时，必须使用setState方法，否则React不能被监听到
+       this.setState({ isHot });
+     }
+     render() {
+       let { isHot } = this.state;
+       return (
+         <h1 onClick={this.change}>今天天气很{isHot ? "炎热" : "凉爽"}</h1>
+       );
+     }
    }
    ```
 
 5. 简写：
 
-   ```
+   ```js
    class Weather extends React.Component {
-       state = {
-           isHot: true
-       };
-       change = () => {
-           let { isHot } = this.state
-           isHot = !isHot;
-           this.setState({ isHot });
-       }
-       render() {
-           let { isHot } = this.state
-           return <h1 onClick={this.change}>今天天气很{isHot ? '炎热' : '凉爽'}</h1>
-       }
+     state = {
+       isHot: true,
+     };
+     change = () => {
+       let { isHot } = this.state;
+       isHot = !isHot;
+       this.setState({ isHot });
+     };
+     render() {
+       let { isHot } = this.state;
+       return (
+         <h1 onClick={this.change}>今天天气很{isHot ? "炎热" : "凉爽"}</h1>
+       );
+     }
    }
    ```
 
@@ -175,41 +180,48 @@ React 定义的一种类似 XML 的 js 扩展语法:XML + JS
 
 1.  调用组件时，设置组件的属性值即可传递参数
 
-        <People name="张三" age={18} />
+    ```js
+    <People name="张三" age={18} />
+    ```
 
 2.  组件内通过 props 读取参数
 
-        this.props.paramName;
+    ```js
+    this.props.paramName;
+    ```
 
 3.  代码示例
 
-    ```
-    class People extends React.Component{
-        render(){
-            let {name,age} = this.props;
-            return (
-                <div>
-                    <ul>
-                        <li>姓名：{name}</li>
-                        <li>年龄：{age}</li>
-                    </ul>
-                    <hr />
-                </div>
-            )
-        }
+    ```js
+    class People extends React.Component {
+      render() {
+        let { name, age } = this.props;
+        return (
+          <div>
+            <ul>
+              <li>姓名：{name}</li>
+              <li>年龄：{age}</li>
+            </ul>
+            <hr />
+          </div>
+        );
+      }
     }
 
     let people = {
-        name:"张三",
-        age:"18"
+      name: "张三",
+      age: "18",
     };
 
-    ReactDom.render(<People name={people.name} age={people.age} />,document.getElementById('app'))
+    ReactDom.render(
+      <People name={people.name} age={people.age} />,
+      document.getElementById("app")
+    );
     ```
 
 4.  传参限制
 
-    ```
+    ```js
     import PropTypes from "prop-types"
     class People extends React.Component{
         //参数类型限制
@@ -236,32 +248,37 @@ state 与 props 的区别
 
 1.  创建
 
-    ```
+    ```js
     //挂载到this.refs上
     <input type="text" ref="inputName" />
     ```
 
 2.  使用
 
-        this.refs.inputName
+    ```js
+    this.refs.inputName;
+    ```
 
 回调方式：
 
 1.  创建
 
-    ```
+    ```js
     //挂载到this上
-    <input type="text" ref={el=>this.inputName = el} />
+    <input type="text" ref={(el) => (this.inputName = el)} />
     ```
 
 2.  使用
-        this.inputName
 
-createRef 方式：
-
-1.  创建
-
+    ```js
+    this.inputName;
     ```
+
+    createRef 方式：
+
+3.  创建
+
+    ```js
     <input type="text" ref="this.inputName" />
     constructor(props){
         super(props);
@@ -271,33 +288,37 @@ createRef 方式：
 
     ```
 
-2.  使用
+4.  使用
 
-        this.inputName.current
+    ```js
+    this.inputName.current;
+    ```
 
 代码示例
 
-    class UseInput extends React.Component{
-        constructor(props){
-            super(props);
-            this.inputName = React.createRef();
-        }
-        clickHandler = ()=>{
-            console.log(this.refs.inputName1)
-            console.log(this.inputName2)
-            console.log(this.inputName3)
-        }
-        render(){
-            return (
-                <div>
-                    <input type="text" ref="inputName1" />
-                    <input type="text" ref={el=>this.inputName2 = el} />
-                    <input type="text" ref={this.inputName3} />
-                    <button onClick={this.clickHandler}>点击</button>
-                </div>
-            )
-        }
-    }
+```js
+class UseInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.inputName = React.createRef();
+  }
+  clickHandler = () => {
+    console.log(this.refs.inputName1);
+    console.log(this.inputName2);
+    console.log(this.inputName3);
+  };
+  render() {
+    return (
+      <div>
+        <input type="text" ref="inputName1" />
+        <input type="text" ref={(el) => (this.inputName2 = el)} />
+        <input type="text" ref={this.inputName3} />
+        <button onClick={this.clickHandler}>点击</button>
+      </div>
+    );
+  }
+}
+```
 
 ## 生命周期
 
@@ -350,11 +371,10 @@ React 生命周期图如下：
 1. props
 2. 消息订阅(subscribe)与发布(publish)机制
 
-   ```
-   import PubSub from 'pubsub-js'
-   PubSub.subscribe('EventName',function(msg,data){});//订阅
-   PubSub.publish('EventName',data);//发布
-
+   ```js
+   import PubSub from "pubsub-js";
+   PubSub.subscribe("EventName", function (msg, data) {}); //订阅
+   PubSub.publish("EventName", data); //发布
    ```
 
 3. redux
@@ -375,7 +395,7 @@ React 生命周期图如下：
 
 1.  创建 reducer
 
-    ```
+    ```js
     const ADD_COUNT =  'add';
 
     //reducer 只是一个接收 state 和 action，并返回新的 state 的函数
@@ -405,37 +425,40 @@ React 生命周期图如下：
 
 2.  创建 store
 
-    ```
-    import {createStore} from 'redux'
-    const store = createStore(reducer);//在最上层渲染界面引入reducer
+    ```js
+    import { createStore } from "redux";
+    const store = createStore(reducer); //在最上层渲染界面引入reducer
     ```
 
 3.  获取 state
 
-        const state = store.getState();
+    ```js
+    const state = store.getState();
+    ```
 
 4.  订阅 view 变化
 
-        store.subscribe(render);//执行render函数 重新渲染
+    ```js
+    store.subscribe(render); //执行render函数 重新渲染
+    ```
 
 5.  同步更新 state
 
-    ```
+    ```js
     //底层组件，根据上层组件的所传的参数更新数据状态
 
     let addClick = this.props.addClick;
-    store.dispatch(addClick(count));//更新数据状态
-
+    store.dispatch(addClick(count)); //更新数据状态
     ```
 
 6.  异步更新 state (redux-thunk)
 
         npm i -S redux-thunk //安装异步更新中间件
 
-    ```
-    import thunk from 'redux-thunk'
-    import {createStore,applyMiddleware} from 'redux';//applyMiddleware管理中间件
-    const store = createStore(reducer,applyMiddleware(thunk));//需引入之前创建的reducer函数
+    ```js
+    import thunk from "redux-thunk";
+    import { createStore, applyMiddleware } from "redux"; //applyMiddleware管理中间件
+    const store = createStore(reducer, applyMiddleware(thunk)); //需引入之前创建的reducer函数
 
     //更新方式与同步更新一致，只是actionCreator即是：addClickAsync函数）返回的是一个函数
     //而同步更新的actionCreator（即是：addClick函数）返回的仅仅一个含有type键的对象
@@ -443,8 +466,7 @@ React 生命周期图如下：
     //底层组件，根据上层组件的所传的参数更新数据状态
 
     let addClickAsync = this.props.addClickAsync;
-    store.dispatch(addClickAsync(count));//更新数据状态
-
+    store.dispatch(addClickAsync(count)); //更新数据状态
     ```
 
 7.  调试
@@ -453,120 +475,126 @@ React 生命周期图如下：
     >
     > 在项目中安装 npm 包，`npm i -S redux-devtools-extension`
 
-    ```
-    import {createStore} from 'redux';
-    import { composeWithDevTools } from 'redux-devtools-extension';
-    const store = createStore(reducer, compose(
-        composeWithDevTools()
-    )); //在最上层渲染界面引入reducer
+    ```js
+    import { createStore } from "redux";
+    import { composeWithDevTools } from "redux-devtools-extension";
+    const store = createStore(reducer, compose(composeWithDevTools())); //在最上层渲染界面引入reducer
     ```
 
 8.  react-redux
 
     > 安装 `npm i -S react-redux`
-
+    >
     > 提供 Provider 组件：订阅 store 状态的变化
-
+    >
     > 提供 connect 方法：访问 store 数据，分发 action 更新数据状态
 
-    ```
-    import thunk from 'redux-thunk';
-    import { Provider } from 'react-redux';//Provider可以订阅store状态的变化
-    import { createStore, applyMiddleware, compose } from 'redux'; //applyMiddleware管理中间件
-    import { composeWithDevTools } from 'redux-devtools-extension';
+    ```js
+    import thunk from "redux-thunk";
+    import { Provider } from "react-redux"; //Provider可以订阅store状态的变化
+    import { createStore, applyMiddleware, compose } from "redux"; //applyMiddleware管理中间件
+    import { composeWithDevTools } from "redux-devtools-extension";
 
-    const store = createStore(reducer, compose(
-        applyMiddleware(thunk),
-        composeWithDevTools()
-    )); //在最上层渲染界面引入reducer
+    const store = createStore(
+      reducer,
+      compose(applyMiddleware(thunk), composeWithDevTools())
+    ); //在最上层渲染界面引入reducer
 
-    ReactDom.render((
-        <Provider store={store}>
-            <ReduxCom />
-        </Provider>
-    ), document.getElementById('root'));
+    ReactDom.render(
+      <Provider store={store}>
+        <ReduxCom />
+      </Provider>,
+      document.getElementById("root")
+    );
     ```
 
 9.  代码示例
 
-    ```
+    ```js
     //reducer.js--文件内容
 
-    import Redux from "redux"
+    import Redux from "redux";
 
-    const ADD_COUNT = 'add';
+    const ADD_COUNT = "add";
 
     export function reducer(state = { count: 0 }, action) {
-        switch (action.type) {
-            case ADD_COUNT:
-                return Object.assign({}, state, {
-                    count: state.count + action.count
-                })
-            default:
-            return state
-        }
+      switch (action.type) {
+        case ADD_COUNT:
+          return Object.assign({}, state, {
+            count: state.count + action.count,
+          });
+        default:
+          return state;
+      }
     }
     export function addClick(count) {
-        return { type: ADD_COUNT, count }
+      return { type: ADD_COUNT, count };
     }
 
     export function addClickAsync(count) {
-        return dispatch=>{
-            setTimeout(()=>{
-                dispatch(addClick(count))
-            },2000);
-        }
+      return (dispatch) => {
+        setTimeout(() => {
+          dispatch(addClick(count));
+        }, 2000);
+      };
     }
     ```
 
-    ```
+    ```js
     //app.jsx--文件内容
 
     import React from "react";
     import ReactDom from "react-dom";
-    import ReduxCom from './redux/Redux.jsx';//测试组件
-    import thunk from 'redux-thunk';//异步更新state的中间件
-    import { Provider } from 'react-redux';//Provider可以订阅store状态的变化
-    import { createStore, applyMiddleware, compose } from 'redux'; //applyMiddleware管理中间件
-    import { composeWithDevTools } from 'redux-devtools-extension';//redux调试工具
-    import { reducer} from './redux/index.redux.js';//reducer
+    import ReduxCom from "./redux/Redux.jsx"; //测试组件
+    import thunk from "redux-thunk"; //异步更新state的中间件
+    import { Provider } from "react-redux"; //Provider可以订阅store状态的变化
+    import { createStore, applyMiddleware, compose } from "redux"; //applyMiddleware管理中间件
+    import { composeWithDevTools } from "redux-devtools-extension"; //redux调试工具
+    import { reducer } from "./redux/index.redux.js"; //reducer
 
-    const store = createStore(reducer, compose(
-        applyMiddleware(thunk),
-        composeWithDevTools()
-    )); //在最上层渲染界面引入reducer
+    const store = createStore(
+      reducer,
+      compose(applyMiddleware(thunk), composeWithDevTools())
+    ); //在最上层渲染界面引入reducer
 
-    ReactDom.render((
-        <Provider store={store}>
-            <ReduxCom />
-        </Provider>
-    ), document.getElementById('root'));
+    ReactDom.render(
+      <Provider store={store}>
+        <ReduxCom />
+      </Provider>,
+      document.getElementById("root")
+    );
     ```
 
-    ```
+    ```js
     //测试组件--文件内容
 
-    import React from "react"
-    import { connect } from 'react-redux'; //Provider可以订阅store状态的变化
-    import { addClick, addClickAsync } from './index.redux.js'
+    import React from "react";
+    import { connect } from "react-redux"; //Provider可以订阅store状态的变化
+    import { addClick, addClickAsync } from "./index.redux.js";
     class ReduxCom extends React.Component {
-        render() {
-            return (
-                <div>
-                    <h1>点击了{this.props.count}</h1>
-                    <button onClick={()=>{this.props.addClickAsync(1)}}>点击</button>
-                </div>
-            )
-        }
+      render() {
+        return (
+          <div>
+            <h1>点击了{this.props.count}</h1>
+            <button
+              onClick={() => {
+                this.props.addClickAsync(1);
+              }}
+            >
+              点击
+            </button>
+          </div>
+        );
+      }
     }
     //需要绑定的数据
     const mapStateToProps = (state) => {
-        return { count: state.count }
-    }
+      return { count: state.count };
+    };
     //需要绑定的函数
     const actionCreators = { addClick, addClickAsync };
     ReduxCom = connect(mapStateToProps, actionCreators)(ReduxCom); //将对应的数据和更改数据状态的函数绑定到props上
-    export default ReduxCom
+    export default ReduxCom;
     ```
 
 ## 路由（React-Router4）
@@ -577,12 +605,11 @@ React 生命周期图如下：
 
 2. 使用
 
-   ```
+   ```html
    <BrowserRouter>
-       <Link to='/index'>首页<Link>
-       <Link to='/contact'>联系<Link>
-       <Route path='/index' component={Index}> </Route>
-       <Route path='/contact' component={Contact}> </Route>
-       <Redirect to='/idnex'></Redirect>
+     <link to="/index" />首页<link /> <link to="/contact" />联系<link />
+     <Route path="/index" component="{Index}"> </Route>
+     <Route path="/contact" component="{Contact}"> </Route>
+     <Redirect to="/idnex"></Redirect>
    </BrowserRouter>
    ```
