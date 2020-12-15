@@ -23,7 +23,7 @@ npm install gulp --save-dev
 
 2. 配置 package.json 执行脚本
 
-   ```json
+   ```js
    {
      "scripts": {
        "gulpTest": "gulp", // 或者可以使用 gulp -f ./gulpfile.js 指定配置文件的位置

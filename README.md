@@ -36,9 +36,10 @@
 
 1. [vue-cli3.0 项目优化方案总结](https://github.com/StarShi/Big-Monster/blob/master/blog/vue-cli3.0%E9%A1%B9%E7%9B%AE%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93.md)
 
-## 规范
+## 规范 & 自动化
 
 1. [eslint 从入门到放弃](https://github.com/StarShi/Big-Monster/blob/master/blog/eslint%e4%bb%8e%e5%85%a5%e9%97%a8%e5%88%b0%e6%94%be%e5%bc%83.md)
+2. [前端自动化之路——gulp](https://github.com/StarShi/Big-Monster/blob/master/blog/%E5%89%8D%E7%AB%AF%E8%87%AA%E5%8A%A8%E5%8C%96%E4%B9%8B%E8%B7%AF%E2%80%94%E2%80%94gulp.md)
 
 ## 笔记
 
