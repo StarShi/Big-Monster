@@ -13,3 +13,9 @@
 | 148  | [链表排序](https://github.com/StarShi/Big-Monster/blob/master/source/leet-code/doc/%E9%93%BE%E8%A1%A8%E6%8E%92%E5%BA%8F.md) | 中等 |
 | 164  | [最大间距](https://github.com/StarShi/Big-Monster/blob/master/source/leet-code/doc/%e6%9c%80%e5%a4%a7%e9%97%b4%e8%b7%9d.md) | 困难 |
 | 179  | [最大数](https://github.com/StarShi/Big-Monster/blob/master/source/leet-code/doc/%e6%9c%80%e5%a4%a7%e6%95%b0.md) | 中等 |
+
+## 算术 math
+
+| 题号 | 标题     | 难度 |
+| ---- | -------- | ---- |
+| 415   | [字符串相加](https://github.com/StarShi/Big-Monster/blob/master/source/leet-code/doc/%e5%ad%97%e7%ac%a6%e4%b8%b2%e7%9b%b8%e5%8a%a0.md) | 简单 |
