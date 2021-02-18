@@ -29,6 +29,7 @@ function addString(a, b) {
     flag = Math.floor(temp / 10);
     result = '' + temp % 10 + result;
   }
+  // 如果循环结束，flag 标记为1，则得到的结果还需要向前进1
   if(flag === 1){
     result = "1" + result
   }
