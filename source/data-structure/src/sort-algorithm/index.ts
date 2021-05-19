@@ -255,7 +255,7 @@ export default class Sort {
                 // 有效数加 1
                 bucketElemCount[digitOfElement]++;
             }
-            // 每完成一位数的比较，就将其顺序更新至二维数组中
+            // 每完成一位数的比较，就将其顺序更新至数组中
             let index: number = 0;
             // 遍历每一个桶
             for (let k: number = 0; k < bucketElemCount.length; k++) {

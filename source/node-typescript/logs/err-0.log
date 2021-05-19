@@ -1,0 +1,221 @@
+2020-05-07 16:21:26: 
+2020-05-07 16:21:26:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 16:21:26: 
+2020-05-07 16:29:14: 
+2020-05-07 16:29:14:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 16:29:14: 
+2020-05-07 16:29:22: 
+2020-05-07 16:29:22:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 16:29:22: 
+2020-05-07 16:41:39: 
+2020-05-07 16:41:39:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 16:41:39: 
+2020-05-07 16:42:04: 
+2020-05-07 16:42:04:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 16:42:04: 
+2020-05-07 16:43:56: 
+2020-05-07 16:43:56:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 16:43:56: 
+2020-05-07 16:57:09: 
+2020-05-07 16:57:09:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 16:57:09: 
+2020-05-07 16:58:11: 
+2020-05-07 16:58:11:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 16:58:11: 
+2020-05-07 17:27:56: 
+2020-05-07 17:27:56:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 17:27:56: 
+2020-05-07 17:28:00: 
+2020-05-07 17:28:00:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 17:28:00: 
+2020-05-07 17:29:09: 
+2020-05-07 17:29:09:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 17:29:09: 
+2020-05-07 17:37:32: 
+2020-05-07 17:37:32:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 17:37:32: 
+2020-05-07 17:37:59: 
+2020-05-07 17:37:59:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 17:37:59: 
+2020-05-07 17:40:35: 
+2020-05-07 17:40:35:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 17:40:35: 
+2020-05-07 17:43:08: 
+2020-05-07 17:43:08:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 17:43:08: 
+2020-05-07 17:43:11: 
+2020-05-07 17:43:11:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 17:43:11: 
+2020-05-07 17:55:25: 
+2020-05-07 17:55:25:   RepositoryNotFoundError: No repository for "User" was found. Looks like this entity is not registered in current "default" connection?
+      at new RepositoryNotFoundError (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\error\RepositoryNotFoundError.js:11:28)
+      at EntityManager.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\entity-manager\EntityManager.js:660:19)
+      at Connection.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\connection\Connection.js:343:29)
+      at Function.BaseEntity.getRepository (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:68:27)
+      at Function.BaseEntity.find (D:\shixin\Big-Monster\source\node-typescript\node_modules\typeorm\repository\BaseEntity.js:180:21)
+      at searchUser (D:\shixin\Big-Monster\source\node-typescript\dist\controllers\user_controller.js:19:47)
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+      at next (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:45:18)
+      at D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\lib\router.js:346:16
+      at dispatch (D:\shixin\Big-Monster\source\node-typescript\node_modules\koa-router\node_modules\koa-compose\index.js:44:32)
+2020-05-07 17:55:25: 

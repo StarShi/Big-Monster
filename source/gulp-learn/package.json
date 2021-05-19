@@ -1,0 +1,15 @@
+{
+  "name": "gulp-learn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gulpTest":"gulp",
+    "gulp":"gulp -f ./build/compiler.js compileCss default"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  }
+}

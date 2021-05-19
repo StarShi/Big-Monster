@@ -1,24 +1,19 @@
 {
-    "restartable": "rs",
-    "ignore": [".git", "node_modules/**", "dist", ".cache", "logs"],
-    "verbose": true,
-    "execMap": {
-      "": "node",
-      "js": "node --harmony",
-      "ts":"ts-node"
-    },
-    "events": {
-      "start": "",
-      "crash": "",
-      "exit": "",
-      "restart": ""
-    },
-    "ext": "js json ts tsx",
-    "watch": ["./**"],
-    "env": {
-      "NODE_ENV": "development",
-      "PORT": "3000"
-    },
-    "legacy-watch": false
-  }
-
+  "restartable": "rs",
+  "ignore": [".git", "node_modules/**", "dist", ".cache", "logs"],
+  "verbose": true,
+  "execMap": {
+    "": "node",
+    "js": "node --harmony",
+    "ts": "ts-node"
+  },
+  "events": {
+    "start": "",
+    "crash": "",
+    "exit": "",
+    "restart": ""
+  },
+  "ext": "js json ts tsx",
+  "watch": ["./**"],
+  "legacy-watch": false
+}
